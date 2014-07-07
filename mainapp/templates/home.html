@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+    <h4>{{user}}</h4>
+	{% if messages %}
+        <ul>
+            <li>{{ messages }}</li>
+        </ul>
+    {% endif %}
+
+
+	<br />
+
+    Home! <a href='/logout'>Logout</a>
+	<form enctype="multipart/form-data" action="/submitprogram/" method="post">{% csrf_token %}
+		<input type="file" name="file" id="fileUploadField"/>
+		<div id="uploadbutton">
+			<input type="submit" name="Upload" value="Upload" />
+		</div>
+	</form>
+	<h4>Files</h4>
+	<ul>
+		{% for file in files %}
+		<li>{{file}}</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
