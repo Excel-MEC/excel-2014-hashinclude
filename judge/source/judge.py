@@ -37,8 +37,7 @@ cursor.execute(createtable_problems)
 db.close()
 
 
-
-
+# stage 1 compilation. 
 def compilation_engine(code_name, lang):
 	print "\nStage 1 : Compilation Started ..."
 	if lang == "C" :
@@ -59,11 +58,10 @@ def compilation_engine(code_name, lang):
 	print "Stage 1 : Compilation completed."
 	global compiled 
 	compiled = 1
-	
 
 
+# stage 2 execution.	
 def execution_engine(code_name, lang):
-	
 	if compiled == 0 :
 		print "\nStage 2 : Not compiled terminated ..."
 		return 0;
@@ -77,17 +75,22 @@ def execution_engine(code_name, lang):
 	running = 100
 	endtime = time.time()
 	timediff = endtime-starttime
-	print "\n Success : Thread completed ! "
-	print	"completed in : " 
+	print "\nThread completed ! "
+	print "Stage 2 : execution completed in : " 
 	print timediff
 
+
+#force killing of a thread after Timelimit for the problem.
 def kill(code_name,lang):
+	print "Time Limit Exceeded"
+	print "Force : Killing the thread !"
 	global mypid
 	if lang=="C": process = code_name
 	elif lang=="C++": process = code_name
 	elif lang=="Java": process = "java"
 	for process in os.popen("ps -A | grep "+str(process)).read().split("\n"):
 		pdata = process.split();
+		print pdata
 		if(len(pdata)>0): pid = int(pdata[0])
 		else: pid = -1
 		if pid==mypid or pid==-1: continue
@@ -98,26 +101,17 @@ def kill(code_name,lang):
 
 #-----------------testing------------------
 
-#compilation_engine("helloworld","C")
-#execution_engine("helloworld","C")
-
-timelimit = 3
+timelimit = 1
 code_name = "helloworld"
-lang      = "C"
+lang      = "C++"
 
-print "\nStarted a new thread ..."
 compilation_engine(code_name,lang)
 thread.start_new_thread(execution_engine,(code_name,lang))
-killtimer = time.time()
-print "Sleep ..."
-time.sleep(0.5)
+#killtimer = time.time()
+time.sleep(timelimit) #IF the program doesnot finish the force kill the thread.
+kill(code_name,lang)
 
-if running != 100 :
-	killtimer = float(time.time()) - float(killtimer)
-	if killtimer > timelimit :
-		print "Error : Time Limit Exceeded "
-		print "KILL THREAD : ACTIVATED"
-		kill(code_name,lang)
+
 #---------------------------------------------
 
 
