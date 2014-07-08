@@ -30,11 +30,13 @@ def login(request):
 
 @login_required(login_url='/login/')
 def home(request):
-    files=get_player_submissions(request)
-    c = {'files':files,'user':request.user.username}
-    c.update(csrf(request))
+    c={}
     if request.FILES:
         c['messages']=submit_program(request)
+    files=get_player_submissions(request)
+    c['files']=files
+    c['user']=request.user.username
+    c.update(csrf(request))
     return render_to_response("home.html",c,context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')

@@ -41,6 +41,3 @@ def get_player_submissions(request):
     path = DIR+'/'+str(request.user.username)+'_'+str(request.user.id)  
     allfiles = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path,f))]
     return allfiles
-    
-
-    
