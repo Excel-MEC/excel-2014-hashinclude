@@ -11,6 +11,16 @@ from source.player import *
 def index(request):
     return render_to_response("index.html")
 
+def leaders(request):
+    return render_to_response("leaderboard.html")
+
+def profile(request):
+    return render_to_response("profile.html")
+
+def questions(request):
+    return render_to_response("questions.html")
+
+
 def login(request):
     errors = []
     if request.method == 'POST':
