@@ -2,6 +2,89 @@
 
 {% load staticfiles %}
 {% block content %}
+<style>
+#qcard
+{
+	margin-top: 5%;
+	position:absolute;
+	left:10%;
+	z-index: -1;
+}
+
+header ul,li{
+  list-style:none;
+}
+header ul{
+  overflow:hidden;
+  padding:3em;
+}
+header ul li a{
+  text-decoration:none;
+  color:#000;
+  background:#ffc;
+  display:block;
+  height:12em;
+  width:12em;
+  padding:1em;
+  -moz-box-shadow:5px 5px 7px rgba(33,33,33,1);
+  -webkit-box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+  -moz-transition:-moz-transform .15s linear;
+  -o-transition:-o-transform .15s linear;
+  -webkit-transition:-webkit-transform .15s linear;
+}
+header ul li{
+  margin:1em;
+  float:left;
+}
+header ul li h2{
+  font-size:140%;
+  font-weight:bold;
+  padding-bottom:10px;
+}
+header ul li p{
+  font-family:"Reenie Beanie",arial,sans-serif;
+  font-size:100%;
+}
+header ul li a{
+  -webkit-transform: rotate(-6deg);
+  -o-transform: rotate(-6deg);
+  -moz-transform:rotate(-6deg);
+}
+header ul li:nth-child(even) a{
+  -o-transform:rotate(4deg);
+  -webkit-transform:rotate(4deg);
+  -moz-transform:rotate(4deg);
+  position:relative;
+  top:5px;
+  background:#cfc;
+}
+header ul li:nth-child(3n) a{
+  -o-transform:rotate(-3deg);
+  -webkit-transform:rotate(-3deg);
+  -moz-transform:rotate(-3deg);
+  position:relative;
+  top:-5px;
+  background:#ccf;
+}
+header ul li:nth-child(5n) a{
+  -o-transform:rotate(5deg);
+  -webkit-transform:rotate(5deg);
+  -moz-transform:rotate(5deg);
+  position:relative;
+  top:-10px;
+}
+header ul li a:hover,ul li a:focus{
+  box-shadow:10px 10px 7px rgba(0,0,0,.7);
+  -moz-box-shadow:10px 10px 7px rgba(0,0,0,.7);
+  -webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.7);
+  -webkit-transform: scale(1.25);
+  -moz-transform: scale(1.25);
+  -o-transform: scale(1.25);
+  position:relative;
+  z-index:5;
+}
+</style>
 		<div class="container">
 			<ul id="gn-menu" class="gn-menu-main">
 				<li class="gn-trigger">
@@ -25,7 +108,34 @@
 
 			</ul>
 			<header>
-			
+			<div id="qcard">
+			<ul>
+    <li>
+      <a href="#">
+        <h2>Q #1</h2>
+        <p>The slaves of Ashtapor</p>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <h2>Q #2</h2>
+        <p>Slaves of Nedeem</p>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <h2>Q #3</h2>
+        <p>Slaves of Kareem</p>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <h2>Q #4</h2>
+        <p>Slaves of Yunkai</p>
+      </a>
+    </li>
+  </ul>
+			</div>
 			</header> 
 		</div>
 		<script src="{% static "js/classie.js"%}"></script>
