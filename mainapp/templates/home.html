@@ -1,30 +1,55 @@
-{% extends "base.html" %}
-
 {% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
 
-{% block content %}
+    <title>onlineJudge</title>
+    	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-    <h4>{{user}}</h4>
-	{% if messages %}
-        <ul>
-            <li>{{ messages }}</li>
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="/home/">Home</a></li>
+          <li><a href="/profile/">My Profile</a></li>
+          <li><a href="/leaderboard/">Leaderboard</a></li>
+          <li><a href="#">Contact</a></li>
         </ul>
-    {% endif %}
-
-
-	<br />
-
-    Home! <a href='/logout'>Logout</a>
-	<form enctype="multipart/form-data" action="/home/" method="post">{% csrf_token %}
-		<input type="file" name="file" id="fileUploadField"/>
-		<div id="uploadbutton">
-			<input type="submit" name="Upload" value="Upload" />
-		</div>
-	</form>
-	<h4>Files</h4>
-	<ul>
-		{% for file in files %}
-		<li>{{file}}</li>
+        <h3 class="text-muted">Online Judge</h3>
+      </div>
+      <br/>
+      <div class="jumbotron">
+        <h1>Home - {{user}}</h1>
+      </div>
+	<div>
+		{% for problem in problems %}
+		<a href="/problem?id={{problem.id}}">{{problem.name}}</a><br />
 		{% endfor %}
-	</ul>
-{% endblock %}
+	</div>
+      
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+  </body>
+</html>

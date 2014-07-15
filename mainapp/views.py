@@ -36,7 +36,7 @@ def login(request):
                     errors.append('Invalid Credentials')  
     c = {'errors' : errors}
     c.update(csrf(request))
-    return render_to_response("player-login.html",c)
+    return render_to_response("index.html",c)
 
 @login_required(login_url='/login/')
 def home(request):
