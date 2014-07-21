@@ -110,30 +110,14 @@ header ul li a:hover,ul li a:focus{
 			<header>
 			<div id="qcard">
 			<ul>
+      	{% for problem in problems %}
     <li>
-      <a href="#">
-        <h2>Q #1</h2>
-        <p>The slaves of Ashtapor</p>
+      <a href="/problem?id={{problem.id}}">
+        <h2>Q #{{forloop.counter0}}</h2>
+        <p>{{problem.name}}</p>
       </a>
     </li>
-    <li>
-      <a href="#">
-        <h2>Q #2</h2>
-        <p>Slaves of Nedeem</p>
-      </a>
-    </li>
-    <li>
-      <a href="#">
-        <h2>Q #3</h2>
-        <p>Slaves of Kareem</p>
-      </a>
-    </li>
-    <li>
-      <a href="#">
-        <h2>Q #4</h2>
-        <p>Slaves of Yunkai</p>
-      </a>
-    </li>
+		{% endfor %}
   </ul>
 			</div>
 			</header> 

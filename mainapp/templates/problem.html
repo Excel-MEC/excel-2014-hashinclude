@@ -27,7 +27,7 @@
       <div class="header">
         <ul class="nav nav-pills pull-right">
           <li ><a href="home.html">Home</a></li>
-           <li class="active"><a href="question.html">Questions</a></li>
+           <li class="active"><a href="/allproblems">Questions</a></li>
           <li><a href="#">My Profile</a></li>
           <li><a href="leaderboard.html">Leaderboard</a></li>
           <li><a href="#">Contact</a></li>
@@ -43,8 +43,7 @@
           <div class="blog-post">
           	{{messages}}
             <h1 class="blog-post-title">{{q.name}}</h1>
-            <p class="blog-post-meta">January 1, 2014 by <a href="#">Aaron</a></p>
-			{{q.description}}
+            {{q.description}}
           </div><!-- /.blog-post -->
           	<form enctype="multipart/form-data" action="/problem?id={{q.id}}" method="post">{% csrf_token %}
 			<input type="file" name="file" id="fileUploadField"/>
