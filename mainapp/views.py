@@ -73,7 +73,10 @@ def home(request):
     c={}
     print "hello", request.user.is_authenticated()
     if request.FILES:
-        c['messages']=submit_program(request)
+        if c['messages']==submit_program(request):
+            c['message_compilation'] = compile_submission(request)
+        else:
+            c['messages']='failed'
     files=get_player_submissions(request)
     c['files']=files
     c['user']=request.user.username

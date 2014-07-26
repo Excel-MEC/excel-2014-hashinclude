@@ -29,3 +29,7 @@ def save_submission(request):
     except:
         return False
 
+def compile_submission(request):
+    filename = str(request.FILES.get('file'))
+    file = str(request.user.username)+'_'+str(request.user.id)+'/'+filename
+    
