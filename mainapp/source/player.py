@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout
-from mainapp.models import Player
+from mainapp.models import Player,Submission
 import os
 
 def register_player(data):
@@ -25,10 +25,12 @@ def register_player(data):
         try:
             p.delete()
             user.delete()
+            print "both"
             return False
         except:
             try:
                 user.delete()
+                print "user"
                 return False
             except:
                 return False

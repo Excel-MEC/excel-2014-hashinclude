@@ -26,11 +26,11 @@ class Submission(models.Model):
     id=models.AutoField(primary_key=True)
     playerid = models.ForeignKey(Player)
     problemid = models.ForeignKey(Problem)
-    status = models.CharField(max_length=50,default='Queued')
-    errormessage = models.CharField(max_length=50)
+    status = models.CharField(max_length=50,default='Processing')
+    errormessage = models.CharField(max_length=50,default="Nil")
     score = models.FloatField(default=0)
     language = models.CharField(max_length=50)
-    timetaken = models.IntegerField(default=0)
+    timetaken = models.IntegerField(default=-1)
     timestamp = models.DateTimeField(auto_now=True)
          
 class Solution(models.Model):
@@ -42,3 +42,4 @@ class Solution(models.Model):
     
     class Meta:
         unique_together = (("playerid", "problemid","submissionid"),)
+        

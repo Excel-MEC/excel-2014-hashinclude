@@ -41,6 +41,13 @@ def problem(request):
     id = request.GET.get('id')
     details = get_problem_details(id)
     c = {'q': details}
+    if request.FILES:
+        submissionid = save_submission(request,id)
+        if submissionid>0:
+            c['messages']="Submission Successful"
+            c['message_compilation'] = compile_submission(request,submissionid)
+        else:
+            c['messages']='Submission failed'
     c.update(csrf(request))
     return render_to_response("problem.html",c)
 
@@ -72,24 +79,12 @@ def login(request):
 def home(request):
     c={}
     print "hello", request.user.is_authenticated()
-    if request.FILES:
-        if c['messages']==submit_program(request):
-            c['message_compilation'] = compile_submission(request)
-        else:
-            c['messages']='failed'
     files=get_player_submissions(request)
     c['files']=files
     c['user']=request.user.username
     c['problems'] = get_problems()
     c.update(csrf(request))
     return render_to_response("home.html",c,context_instance=RequestContext(request))
-
-@login_required(login_url='/login/')
-def submit_program(request):
-    if save_submission(request):
-        return 'success'
-    else:
-        return 'failed'    
 
 def logout(request):
     logout_player(request)
@@ -118,3 +113,24 @@ def signup(request):
 
     return render_to_response("signup.html",c,context_instance=RequestContext(request))
 
+def createquestion(request):
+    errors = []
+    if request.method == 'POST':
+        if not request.POST.get('title', ''):
+            errors.append('Enter title.')
+        if not request.POST.get('description', ''):
+            errors.append('Enter a description.')
+        if not request.FILES.get('testcases', ''):
+            errors.append('Enter testcase.')
+        if not request.FILES.get('output', ''):
+            errors.append('Enter output.')
+        if not errors:
+            if save_question(request):
+                return HttpResponseRedirect('/login/')
+            else:
+                errors.append('Error, Try again')
+    c = {'errors' : errors}
+    c.update(csrf(request))
+
+    return render_to_response("create-question.html",c,context_instance=RequestContext(request))
+    
