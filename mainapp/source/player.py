@@ -39,7 +39,11 @@ def logout_player(request):
     logout(request)
 
 def get_player_submissions(request):
-    DIR = os.path.dirname(os.path.dirname(__file__)) + '/media'
-    path = DIR+'/'+str(request.user.username)+'_'+str(request.user.id)  
-    allfiles = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path,f))]
-    return allfiles
+    submissions = []
+    p = Player.objects.get(userid=request.user)
+    all = Submission.objects.filter(playerid=p)
+    for s in all:
+        data = {"status":s.status}
+        submissions.append(data)
+    
+    return submissions

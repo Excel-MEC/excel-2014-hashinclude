@@ -80,7 +80,7 @@ def home(request):
     c={}
     print "hello", request.user.is_authenticated()
     files=get_player_submissions(request)
-    c['files']=files
+    c['submissions']=files
     c['user']=request.user.username
     c['problems'] = get_problems()
     c.update(csrf(request))

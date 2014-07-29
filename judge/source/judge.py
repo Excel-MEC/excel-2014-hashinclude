@@ -142,6 +142,7 @@ def execution_engine(code_name, lang, compiled,submissionid,problemid,foldername
     print "\nThread completed ! "
     print "Stage 2 : execution completed in : " 
     print timediff
+    return 0
 
 
 #force killing of a thread after Timelimit for the problem.
@@ -151,7 +152,10 @@ def kill(code_name,lang,submissionid,problemid,foldername):
     p = Process(target=execution_engine, args=(code_name, lang, 1,submissionid,problemid,foldername,))
     p.start()
     time.sleep(timelimit) #IF the program doesnot finish the force kill the thread.
+    if not p.is_alive():
+        p.join()
     print os.popen("ps -A | grep "+str(p.pid)).read().split("\n")
+    
     try:
         os.kill(p.pid, 0)
         c = Submission.objects.get(id=submissionid)
@@ -159,6 +163,7 @@ def kill(code_name,lang,submissionid,problemid,foldername):
         c.save()
         time.sleep(0.5)
         os.system("kill -9 "+str(p.pid))
+        print "Force killed Execution"
         return True
     except OSError:
         thread3 = solution_verificationThread(3, "Thread-SolVerification", 3,str(submissionid), str(problemid),str(foldername))

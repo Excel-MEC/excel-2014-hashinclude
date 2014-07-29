@@ -38,9 +38,17 @@
       <div class="jumbotron">
         <h1>Home - {{user}}</h1>
       </div>
+      
+	<h2>Problems</h2>
 	<div>
 		{% for problem in problems %}
 		<a href="/problem?id={{problem.id}}">{{problem.name}}</a><br />
+		{% endfor %}
+	</div>
+	<h2>Submission</h2>
+    <div>
+		{% for submission in submissions %}
+		<p>Submission {{forloop.counter}} - {{submission.status}}</p><br />
 		{% endfor %}
 	</div>
       
