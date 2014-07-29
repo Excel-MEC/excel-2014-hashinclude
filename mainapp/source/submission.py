@@ -52,12 +52,13 @@ def compile_submission(request,submissionid,problemid):
     lang = ext_to_lang_dict[extension]
     cleaner(file, lang)
     print file
+    S = Submission.objects.get(id=submissionid)
     if compilation_engine(file,lang,submissionid,problemid,foldername)==1:
-        thread1 = killThread(1, "Thread-kill", 1,file,lang,submissionid)
-        thread2 = execThread(2, "Thread-exec", 2,file,lang,submissionid,problemid,foldername)
+        thread1 = killThread(1, "Thread-kill", 1,str(file),str(lang),submissionid,problemid,str(foldername))
         thread1.start()
-        thread2.start()
         return "Queued for execution"
     else:
+        S.status = "Compilation Error"
+        S.save()
         return "Compilation Error"
     

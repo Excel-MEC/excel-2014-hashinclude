@@ -4,10 +4,12 @@ import MySQLdb as sql
 import os, re, sys, threading, time, urllib
 from mainapp.models import Submission
 import filecmp
+from multiprocessing import Process
 
 class solution_verificationThread(threading.Thread):
     def __init__(self, threadID, name, counter,submissionid, problemid,folder_name):
-        threading.Thread.__init__(self)
+        super(solution_verificationThread, self).__init__()
+        self._stop = threading.Event()
         self.threadID = threadID
         self.name = name
         self.counter = counter
@@ -18,9 +20,12 @@ class solution_verificationThread(threading.Thread):
         print "Starting " + self.name
         solution_verification(self.submissionid,self.problemid,self.foldername)
         print "Exiting " + self.name
+    def stop(self):
+        self._stop.set()
+
 
 class killThread (threading.Thread):
-    def __init__(self, threadID, name, counter,code_name, lang, submissionid):
+    def __init__(self, threadID, name, counter,code_name, lang, submissionid,problemid,foldername):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name
@@ -28,14 +33,18 @@ class killThread (threading.Thread):
         self.code_name = code_name
         self.lang = lang
         self.submissionid = submissionid
+        self.problemid = problemid
+        self.foldername = foldername
     def run(self):
         print "Starting " + self.name
-        kill(self.code_name,self.lang,self.submissionid)
+        kill(self.code_name,self.lang,self.submissionid,self.problemid,self.foldername)
         print "Exiting " + self.name
+
 
 class execThread (threading.Thread):
     def __init__(self, threadID, name, counter,code_name, lang, submissionid, problemid,folder_name):
-        threading.Thread.__init__(self)
+        super(execThread, self).__init__()
+        self._stop = threading.Event()
         self.threadID = threadID
         self.name = name
         self.counter = counter
@@ -48,6 +57,8 @@ class execThread (threading.Thread):
         print "Starting " + self.name
         execution_engine(self.code_name, self.lang, 1,self.submissionid,self.problemid,self.foldername)
         print "Exiting " + self.name
+    def stop(self):
+        self._stop.set()
 
 #connection
 '''db = sql.connect(sql_hostname,sql_username,sql_password,sql_database)
@@ -130,36 +141,29 @@ def execution_engine(code_name, lang, compiled,submissionid,problemid,foldername
     timediff = endtime-starttime
     print "\nThread completed ! "
     print "Stage 2 : execution completed in : " 
-    c = Submission.objects.get(id=submissionid)
-    c.status = "Executed Successfully"
-    c.save()
-    thread3 = solution_verificationThread(3, "Thread-SolVerification", 3,str(submissionid), str(problemid),str(foldername))
-    thread3.start()
     print timediff
 
 
 #force killing of a thread after Timelimit for the problem.
-def kill(code_name,lang,submissionid=0):
+def kill(code_name,lang,submissionid,problemid,foldername):
     timelimit=1
+    c = Submission.objects.get(id=submissionid)
+    p = Process(target=execution_engine, args=(code_name, lang, 1,submissionid,problemid,foldername,))
+    p.start()
     time.sleep(timelimit) #IF the program doesnot finish the force kill the thread.
-    print "Time Limit Exceeded"
-    print "Force : Killing the thread !"
-    mypid = int(os.getpid())
-    if lang=="C": process = code_name
-    elif lang=="C++": process = code_name
-    elif lang=="Java": process = "java"
-    loop = os.popen("ps -A | grep "+str(process)).read().split("\n")
-    print loop
-    for process in loop:
-        pdata = process.split();
-        print pdata
-        if(len(pdata)>0): pid = int(pdata[0])
-        else: pid = -1
-        if pid==mypid or pid==-1: continue
-        os.system("kill -9 "+str(pid))
+    print os.popen("ps -A | grep "+str(p.pid)).read().split("\n")
+    try:
+        os.kill(p.pid, 0)
         c = Submission.objects.get(id=submissionid)
         c.status = "Timeout"
         c.save()
+        time.sleep(0.5)
+        os.system("kill -9 "+str(p.pid))
+        return True
+    except OSError:
+        thread3 = solution_verificationThread(3, "Thread-SolVerification", 3,str(submissionid), str(problemid),str(foldername))
+        thread3.start()
+        return False
 
 def solution_verification(submissionid, problemid,foldername):
     solutionpath = "mainapp/media/question_"+problemid+"/output.txt"
