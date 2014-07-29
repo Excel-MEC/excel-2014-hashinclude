@@ -31,11 +31,11 @@ def save_question(request):
     foldername = 'question_'+str(p.id)+'/'
     try:
         print 'try'
-        with open('mainapp/media/'+foldername+file.name, 'wb+') as destination:
+        with open('mainapp/media/'+foldername+'output.txt', 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
         file = request.FILES.get('testcases') 
-        with open('mainapp/media/'+foldername+file.name, 'wb+') as destination:
+        with open('mainapp/media/'+foldername+'testcases.txt', 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
         return True

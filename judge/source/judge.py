@@ -2,9 +2,22 @@
 # -*- coding: utf-8 -*-
 import MySQLdb as sql
 import os, re, sys, threading, time, urllib
-#from mainapp.models import Submission
+from mainapp.models import Submission
+import filecmp
 
-ioeredirect = " 0<../logs/input.txt 1>../logs/output.txt 2>../logs/error.txt"
+class solution_verificationThread(threading.Thread):
+    def __init__(self, threadID, name, counter,submissionid, problemid,folder_name):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+        self.counter = counter
+        self.submissionid = submissionid
+        self.problemid = problemid
+        self.foldername = folder_name
+    def run(self):
+        print "Starting " + self.name
+        solution_verification(self.submissionid,self.problemid,self.foldername)
+        print "Exiting " + self.name
 
 class killThread (threading.Thread):
     def __init__(self, threadID, name, counter,code_name, lang, submissionid):
@@ -21,7 +34,7 @@ class killThread (threading.Thread):
         print "Exiting " + self.name
 
 class execThread (threading.Thread):
-    def __init__(self, threadID, name, counter,code_name, lang, submissionid):
+    def __init__(self, threadID, name, counter,code_name, lang, submissionid, problemid,folder_name):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name
@@ -29,9 +42,11 @@ class execThread (threading.Thread):
         self.code_name = code_name
         self.lang = lang
         self.submissionid = submissionid
+        self.problemid = problemid
+        self.foldername = folder_name
     def run(self):
         print "Starting " + self.name
-        execution_engine(self.code_name, self.lang, 1,self.submissionid)
+        execution_engine(self.code_name, self.lang, 1,self.submissionid,self.problemid,self.foldername)
         print "Exiting " + self.name
 
 #connection
@@ -51,9 +66,10 @@ createtable_problems = """CREATE TABLE problems (problemcode char(20) NOT NULL, 
 cursor.execute(createtable_problems)
 db.close()'''
 
-def ioe_redirect_create(submissionid=0):
-	ioeredirect  = " 0<../logs/"+submissionid+"-input.txt 1>../logs/"+submissionid+"-output.txt 2>../logs/"+submissionid+"-error.txt"
-	return ioeredirect
+def ioe_redirect_create(submissionid='',foldername='',problemid=''):
+    ioeredirect  = " 0<mainapp/media/question_"+str(problemid)+"/testcases.txt 1>mainapp/media"+str(foldername)+"/output-"+str(submissionid)+".txt 2>mainapp/media"+str(foldername)+"/error-"+str(submissionid)+".txt"
+    print ioeredirect
+    return ioeredirect
 
 #clean out all system level calls in c 
 def cleaner(code_name, lang):
@@ -76,70 +92,86 @@ def cleaner(code_name, lang):
 
 
 # stage 1 compilation. 
-def compilation_engine(code_name, lang, submissionid=0):
-	print "\nStage 1 : Compilation Started ..."
-	if lang == "C" :
-		os.system("gcc "+code_name+".c -lm -lcrypt -O2 -pipe -w -o "+code_name+ioeredirect)
-		if not os.path.exists(code_name):
-			print "\nError : Compilation error (gcc) !"
-			return 0
-	elif lang == "C++" :
-		os.system("g++ "+code_name+".cpp -lm -lcrypt -O2 -pipe -o "+code_name+ioeredirect)
-		if not os.path.exists(code_name):
-			print "\nError : Compilation error (g++) !"
-			return 0
-	else : 
-		os.system("javac "+code_name+".java"+ioeredirect);
-		if not os.path.exists(code_name+".class"):
-			print "\nError : Compilation error (javac) !"
-			return 0
-	print "Stage 1 : Compilation completed."
-	return 1
+def compilation_engine(code_name, lang, submissionid,problemid,foldername):
+    ioeredirect=ioe_redirect_create(submissionid,foldername,problemid)
+    print "\nStage 1 : Compilation Started ..."
+    if lang == "C" :
+        os.system("gcc "+code_name+".c -lm -lcrypt -O2 -pipe -w -o "+code_name+ioeredirect)
+        if not os.path.exists(code_name):
+            print "\nError : Compilation error (gcc) !"
+            return 0
+    elif lang == "C++" :
+        os.system("g++ "+code_name+".cpp -lm -lcrypt -O2 -pipe -o "+code_name+ioeredirect)
+        if not os.path.exists(code_name):
+            print "\nError : Compilation error (g++) !"
+            return 0
+    else : 
+        os.system("javac "+code_name+".java"+ioeredirect);
+        if not os.path.exists(code_name+".class"):
+            print "\nError : Compilation error (javac) !"
+            return 0
+    print "Stage 1 : Compilation completed."
+    return 1
 
-# stage 2 execution.	
-def execution_engine(code_name, lang, compiled, submissionid=0):
-	if compiled == 0 :
-		print "\nStage 2 : Not compiled terminated ..."
-		return 0;
-	print "\nStage 2 : Execution started ..."
-	starttime = time.time()
-	running = 1
-	if   lang == "C"    :  os.system("./"+code_name+ioeredirect)
-	elif lang == "C++"  :  os.system("./"+code_name+ioeredirect)
-	elif lang == "Java" : os.system("java "+code_name+".class"+ioeredirect)
-	running = 100
-	endtime = time.time()
-	timediff = endtime-starttime
-	print "\nThread completed ! "
-	print "Stage 2 : execution completed in : " 
-	#c = Submission.object.get(id=submissionid)
-	#c.status = "Executed Successfully"
-	#c.save()
-	print timediff
+# stage 2 execution.    
+def execution_engine(code_name, lang, compiled,submissionid,problemid,foldername):
+    if compiled == 0 :
+        print "\nStage 2 : Not compiled terminated ..."
+        return 0
+    print "\nStage 2 : Execution started ..."
+    ioeredirect=ioe_redirect_create(submissionid,foldername,problemid)
+    starttime = time.time()
+    running = 1
+    if   lang == "C"    :  os.system("./"+code_name+ioeredirect)
+    elif lang == "C++"  :  os.system("./"+code_name+ioeredirect)
+    elif lang == "Java" : os.system("java "+code_name+".class"+ioeredirect)
+    running = 100
+    endtime = time.time()
+    timediff = endtime-starttime
+    print "\nThread completed ! "
+    print "Stage 2 : execution completed in : " 
+    c = Submission.objects.get(id=submissionid)
+    c.status = "Executed Successfully"
+    c.save()
+    thread3 = solution_verificationThread(3, "Thread-SolVerification", 3,str(submissionid), str(problemid),str(foldername))
+    thread3.start()
+    print timediff
 
 
 #force killing of a thread after Timelimit for the problem.
 def kill(code_name,lang,submissionid=0):
-	timelimit=1
-	time.sleep(timelimit) #IF the program doesnot finish the force kill the thread.
-	print "Time Limit Exceeded"
-	print "Force : Killing the thread !"
-	mypid = int(os.getpid())
-	if lang=="C": process = code_name
-	elif lang=="C++": process = code_name
-	elif lang=="Java": process = "java"
-	loop = os.popen("ps -A | grep "+str(process)).read().split("\n")
-	print loop
-	for process in loop:
-		pdata = process.split();
-		print pdata
-		if(len(pdata)>0): pid = int(pdata[0])
-		else: pid = -1
-		if pid==mypid or pid==-1: continue
-		os.system("kill -9 "+str(pid))
-		#c = Submission.object.get(id=submissionid)
-		#c.status = "Timeout"
-		#c.save()
+    timelimit=1
+    time.sleep(timelimit) #IF the program doesnot finish the force kill the thread.
+    print "Time Limit Exceeded"
+    print "Force : Killing the thread !"
+    mypid = int(os.getpid())
+    if lang=="C": process = code_name
+    elif lang=="C++": process = code_name
+    elif lang=="Java": process = "java"
+    loop = os.popen("ps -A | grep "+str(process)).read().split("\n")
+    print loop
+    for process in loop:
+        pdata = process.split();
+        print pdata
+        if(len(pdata)>0): pid = int(pdata[0])
+        else: pid = -1
+        if pid==mypid or pid==-1: continue
+        os.system("kill -9 "+str(pid))
+        c = Submission.objects.get(id=submissionid)
+        c.status = "Timeout"
+        c.save()
+
+def solution_verification(submissionid, problemid,foldername):
+    solutionpath = "mainapp/media/question_"+problemid+"/output.txt"
+    playeroutputpath = "mainapp/media"+foldername+"/output-"+submissionid+".txt"
+    S = Submission.objects.get(id=submissionid)
+    print solutionpath
+    print playeroutputpath
+    if filecmp.cmp(solutionpath, playeroutputpath):
+        S.status = "Success"
+    else:
+        S.status = "Failed testcases"
+    S.save()
 
 #-----------------testing------------------
 

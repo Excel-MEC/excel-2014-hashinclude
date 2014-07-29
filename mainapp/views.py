@@ -45,7 +45,7 @@ def problem(request):
         submissionid = save_submission(request,id)
         if submissionid>0:
             c['messages']="Submission Successful"
-            c['message_compilation'] = compile_submission(request,submissionid)
+            c['message_compilation'] = compile_submission(request,submissionid,id)
         else:
             c['messages']='Submission failed'
     c.update(csrf(request))
