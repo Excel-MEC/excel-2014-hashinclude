@@ -77,8 +77,11 @@ createtable_problems = """CREATE TABLE problems (problemcode char(20) NOT NULL, 
 cursor.execute(createtable_problems)
 db.close()'''
 
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    
 def ioe_redirect_create(submissionid='',foldername='',problemid=''):
-    ioeredirect  = " 0<mainapp/media/question_"+str(problemid)+"/testcases.txt 1>mainapp/media"+str(foldername)+"/output-"+str(submissionid)+".txt 2>mainapp/media"+str(foldername)+"/error-"+str(submissionid)+".txt"
+    BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    ioeredirect  = " 0<"+str(BASE_PATH)+"/mainapp/media/question_"+str(problemid)+"/testcases.txt 1>"+str(BASE_PATH)+"/mainapp/media"+str(foldername)+"/output-"+str(submissionid)+".txt 2>"+str(BASE_PATH)+"/mainapp/media"+str(foldername)+"/error-"+str(submissionid)+".txt"
     print ioeredirect
     return ioeredirect
 
@@ -107,7 +110,6 @@ def compilation_engine(code_name, lang, submissionid,problemid,foldername):
     ioeredirect=ioe_redirect_create(submissionid,foldername,problemid)
     print "\nStage 1 : Compilation Started ..."
     if lang == "C" :
-        os.system("gcc "+code_name+".c -lm -lcrypt -O2 -pipe -w -o "+code_name+ioeredirect)
         if not os.path.exists(code_name):
             print "\nError : Compilation error (gcc) !"
             return 0
@@ -133,8 +135,8 @@ def execution_engine(code_name, lang, compiled,submissionid,problemid,foldername
     ioeredirect=ioe_redirect_create(submissionid,foldername,problemid)
     starttime = time.time()
     running = 1
-    if   lang == "C"    :  os.system("./"+code_name+ioeredirect)
-    elif lang == "C++"  :  os.system("./"+code_name+ioeredirect)
+    if   lang == "C"    :  os.system("./ "+code_name+ioeredirect)
+    elif lang == "C++"  :  os.system("./ "+code_name+ioeredirect)
     elif lang == "Java" : os.system("java "+code_name+".class"+ioeredirect)
     running = 100
     endtime = time.time()
@@ -171,8 +173,8 @@ def kill(code_name,lang,submissionid,problemid,foldername):
         return False
 
 def solution_verification(submissionid, problemid,foldername):
-    solutionpath = "mainapp/media/question_"+problemid+"/output.txt"
-    playeroutputpath = "mainapp/media"+foldername+"/output-"+submissionid+".txt"
+    solutionpath = str(BASE_PATH)+"/mainapp/media/question_"+problemid+"/output.txt"
+    playeroutputpath = str(BASE_PATH)+"/mainapp/media"+foldername+"/output-"+submissionid+".txt"
     S = Submission.objects.get(id=submissionid)
     print solutionpath
     print playeroutputpath
@@ -198,7 +200,6 @@ thread2.start()
 
 print "Exiting main program"'''
 #---------------------------------------------
-
 
 
 

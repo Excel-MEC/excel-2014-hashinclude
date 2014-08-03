@@ -4,6 +4,8 @@ from mainapp.models import Problem
 
 import os
 
+BASE_PATH = os.path.dirname(os.path.dirname(__file__))
+
 def authenticate_user(request):
     data = request.POST
     if not User.objects.all():
@@ -29,18 +31,14 @@ def save_question(request):
     if file is None:
         return False
     foldername = 'question_'+str(p.id)+'/'
-    try:
-        print 'try'
-        with open('mainapp/media/'+foldername+'output.txt', 'wb+') as destination:
-            for chunk in file.chunks():
-                destination.write(chunk)
-        file = request.FILES.get('testcases') 
-        with open('mainapp/media/'+foldername+'testcases.txt', 'wb+') as destination:
-            for chunk in file.chunks():
-                destination.write(chunk)
-        return True
-    except:
-        return False
+    with open(str(BASE_PATH)+'/media/'+foldername+'output.txt', 'wb') as destination:
+        for chunk in file.chunks():
+              destination.write(chunk)
+    file = request.FILES.get('testcases') 
+    with open(str(BASE_PATH)+'/media/'+foldername+'testcases.txt', 'wb') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+    return True
 
 def get_problems():
     p = Problem.objects.all()

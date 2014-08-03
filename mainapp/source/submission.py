@@ -4,6 +4,9 @@ from judge.source.judge import compilation_engine,execution_engine,kill,killThre
 from mainapp.models import Player,Submission
 import re
 import sys
+import os
+
+BASE_PATH = os.path.dirname(os.path.dirname(__file__))
 
 ext_to_lang_dict = {
                     "cpp":"C++",
@@ -33,7 +36,7 @@ def save_submission(request,problemid):
         return False
     foldername = str(request.user.username)+'_'+str(request.user.id)+'/'        
     try:
-        with open('mainapp/media/'+foldername+str(file), 'wb+') as destination:
+        with open(str(BASE_PATH)+'/media/'+foldername+str(file), 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
         player = Player.objects.get(userid=request.user)
@@ -48,7 +51,7 @@ def compile_submission(request,submissionid,problemid):
     extension = filename[filename.find('.')+1:]
     filename = filename[:filename.find('.')]
     foldername = '/'+str(request.user.username)+'_'+str(request.user.id)
-    file = 'mainapp/media'+foldername+'/'+filename
+    file = str(BASE_PATH)+'/media'+foldername+'/'+filename
     lang = ext_to_lang_dict[extension]
     cleaner(file, lang)
     print file
@@ -61,4 +64,3 @@ def compile_submission(request,submissionid,problemid):
         S.status = "Compilation Error"
         S.save()
         return "Compilation Error"
-    
