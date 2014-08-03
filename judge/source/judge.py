@@ -135,8 +135,9 @@ def execution_engine(code_name, lang, compiled,submissionid,problemid,foldername
     ioeredirect=ioe_redirect_create(submissionid,foldername,problemid)
     starttime = time.time()
     running = 1
-    if   lang == "C"    :  os.system("./ "+code_name+ioeredirect)
-    elif lang == "C++"  :  os.system("./ "+code_name+ioeredirect)
+    print "./ "+code_name+ioeredirect
+    if   lang == "C"    :  os.system(code_name+ioeredirect)
+    elif lang == "C++"  :  os.system(code_name+ioeredirect)
     elif lang == "Java" : os.system("java "+code_name+".class"+ioeredirect)
     running = 100
     endtime = time.time()
