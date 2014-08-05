@@ -110,6 +110,7 @@ def compilation_engine(code_name, lang, submissionid,problemid,foldername):
     ioeredirect=ioe_redirect_create(submissionid,foldername,problemid)
     print "\nStage 1 : Compilation Started ..."
     if lang == "C" :
+        os.system("gcc "+code_name+".c -lm -lcrypt -O2 -pipe -w -o "+code_name+ioeredirect)
         if not os.path.exists(code_name):
             print "\nError : Compilation error (gcc) !"
             return 0
@@ -144,6 +145,7 @@ def execution_engine(code_name, lang, compiled,submissionid,problemid,foldername
     timediff = endtime-starttime
     print "\nThread completed ! "
     print "Stage 2 : execution completed in : " 
+    os.system("rm "+code_name)
     print timediff
     return 0
 

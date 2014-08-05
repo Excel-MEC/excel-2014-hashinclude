@@ -20,7 +20,7 @@ def file_verify(file):
     ONE_MB = 1.049e+6
     if file.size>ONE_MB:
         return False
-    pattern = re.compile('[a-zA-Z0-9]+\.[c|cpp|CPP|c++|cp|cxx|C|py|java]')
+    pattern = re.compile('[a-zA-Z0-9]+\.[c|cpp|CPP|c++|cp|cxx|C]')
     match = pattern.match(file.name)
     if match:
         return True
