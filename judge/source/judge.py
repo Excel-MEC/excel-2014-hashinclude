@@ -88,8 +88,12 @@ def ioe_redirect_create(submissionid='',foldername='',problemid=''):
 #clean out all system level calls in c 
 def cleaner(code_name, lang):
     print "\nStage 0 : Cleaning "
-    if lang == "C":
-        filename = code_name+".c"
+    if lang == "C" or lang == "C++":
+        if lang == "C":
+            filename = code_name+".c"
+        else:
+            filename = code_name+".cpp"
+            
         #filter out dangerous functions and headers
         dangers_c = ['system(','fork(','<CON','execl(','wait(','exit(','<signal.h>','<fcntl.h>','socket.h']
         lines = [line.strip() for line in open(filename)]
