@@ -1,10 +1,9 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-import MySQLdb as sql
 import os, re, sys, threading, time, urllib
 from mainapp.models import Submission
 import filecmp
 from multiprocessing import Process
+
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 class solution_verificationThread(threading.Thread):
     def __init__(self, threadID, name, counter,submissionid, problemid,folder_name):
@@ -59,25 +58,6 @@ class execThread (threading.Thread):
         print "Exiting " + self.name
     def stop(self):
         self._stop.set()
-
-#connection
-'''db = sql.connect(sql_hostname,sql_username,sql_password,sql_database)
-cursor = db.cursor()
-#version of the DB
-cursor.execute("SELECT VERSION()")
-data = cursor.fetchone()
-print "Database version : %s" %data
-#create a table submission
-cursor.execute("DROP TABLE IF EXISTS submission")
-createtable_submission = """CREATE TABLE submission (problemcode char(20) NOT NULL, user char(20) NOT NULL, src_path char(100), done INT, result INT )"""
-cursor.execute(createtable_submission)
-#create table problems
-cursor.execute("DROP TABLE IF EXISTS problems")
-createtable_problems = """CREATE TABLE problems (problemcode char(20) NOT NULL, testcases_path char(100), correctoutput_path char(100))"""
-cursor.execute(createtable_problems)
-db.close()'''
-
-BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     
 def ioe_redirect_create(submissionid='',foldername='',problemid=''):
     BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
@@ -190,23 +170,3 @@ def solution_verification(submissionid, problemid,foldername):
     else:
         S.status = "Failed testcases"
     S.save()
-
-#-----------------testing------------------
-
-'''timelimit = 1
-code_name = "test"
-lang      = "C++"
-
-compilation_engine(code_name,lang)
-
-thread1 = killThread(1, "Thread-kill", 1,code_name,lang,0)
-thread2 = execThread(2, "Thread-exec", 2,code_name,lang,0)
-
-thread1.start()
-thread2.start()
-
-print "Exiting main program"'''
-#---------------------------------------------
-
-
-
