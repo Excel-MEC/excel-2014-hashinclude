@@ -28,12 +28,13 @@ def index(request):
     return render_to_response("index.html",c)
 
 def leaders(request):
-    c = {}
+    c = {"leaderboard" : leaderboard}
     c.update(csrf(request))
     return render_to_response("leaderboard.html",c)
 
 def profile(request):
     c = {}
+    c["profile"] = get_player_profile(request)
     c.update(csrf(request))
     return render_to_response("profile.html",c)
 
@@ -44,10 +45,10 @@ def problem(request):
     if request.FILES:
         submissionid = save_submission(request,id)
         if submissionid>0:
-            c['messages']="Submission Successful"
+            c['messages']="Upload Successful."
             c['message_compilation'] = compile_submission(request,submissionid,id)
         else:
-            c['messages']='Submission failed'
+            c['messages']='Upload failed, please try again.'
     c.update(csrf(request))
     return render_to_response("problem.html",c)
 

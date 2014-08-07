@@ -54,10 +54,12 @@ def compile_submission(request,submissionid,problemid):
     file = str(BASE_PATH)+'/media'+foldername+'/'+filename
     lang = ext_to_lang_dict[extension]
     cleaner(file, lang)
-    print file
-    S = Submission.objects.get(id=submissionid)
+    if not Submission.objects.filter(problemid_id=problemid).filter(status="Success").exists():
+        S = Submission.objects.get(id=submissionid)
+    else:
+        return "Already solved, submission not compiled."
     if compilation_engine(file,lang,submissionid,problemid,foldername)==1:
-        thread1 = killThread(1, "Thread-kill", 1,str(file),str(lang),submissionid,problemid,str(foldername))
+        thread1 = killThread(1, "Thread-kill", 1,str(file),str(lang),submissionid,problemid,str(foldername),request.user.id)
         thread1.start()
         return "Queued for execution"
     else:

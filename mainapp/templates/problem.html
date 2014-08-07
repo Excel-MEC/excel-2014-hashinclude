@@ -26,10 +26,10 @@
     <div class="container">
       <div class="header">
         <ul class="nav nav-pills pull-right">
-          <li ><a href="home.html">Home</a></li>
-           <li class="active"><a href="/allproblems">Questions</a></li>
-          <li><a href="#">My Profile</a></li>
-          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li ><a href="/home">Home</a></li>
+          <li class="active"><a href="/home">Questions</a></li>
+          <li><a href="/profile">My Profile</a></li>
+          <li><a href="/leaderboard">Leaderboard</a></li>
           <li><a href="#">Contact</a></li>
         </ul>
         <h3 class="text-muted">Online Judge</h3>
@@ -41,9 +41,13 @@
         <div class="col-sm-8 blog-main">
 
           <div class="blog-post">
-          	{{messages}}
+          	{{messages}} <br />
+          	{{message_compilation}}
             <h1 class="blog-post-title">{{q.name}}</h1>
-            {{q.description}}
+            {{q.description}} <br />
+            Score : {{q.score}} <br />
+            Difficulty : {{q.difficulty}} <br />
+            Time limit : {{q.timelimit}} <br />
           </div><!-- /.blog-post -->
           	<form enctype="multipart/form-data" action="/problem?id={{q.id}}" method="post">{% csrf_token %}
 			<input type="file" name="file" id="fileUploadField"/>

@@ -47,3 +47,15 @@ def get_player_submissions(request):
         submissions.append(data)
     
     return submissions
+
+def get_player_profile(request):
+    profile = {}
+    p = Player.objects.get(userid_id=request.user.id)
+    if p.totalsubmissions == 0:
+        denominator = 1
+    else:
+        denominator = p.totalsubmissions
+    profile = {"name" : p.name, "email" : p.email, "totalscore":p.totalscore, "successrate":(float(p.totalsolutions)/denominator)*100,
+               "totalsubmissions" : p.totalsubmissions}
+    
+    return profile

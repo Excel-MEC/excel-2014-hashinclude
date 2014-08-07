@@ -18,28 +18,16 @@ class Problem(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=5000)
     score = models.FloatField(default=0)
-    avgtime = models.FloatField(default=0)
-    timelimit = models.FloatField(default=0)
+    timelimit = models.FloatField(default=1)
     difficulty = models.CharField(max_length=50)
-    
+
 class Submission(models.Model):
     id=models.AutoField(primary_key=True)
     playerid = models.ForeignKey(Player)
     problemid = models.ForeignKey(Problem)
     status = models.CharField(max_length=50,default='Processing')
-    errormessage = models.CharField(max_length=50,default="Nil")
     score = models.FloatField(default=0)
     language = models.CharField(max_length=50)
     timetaken = models.IntegerField(default=-1)
     timestamp = models.DateTimeField(auto_now=True)
          
-class Solution(models.Model):
-    id=models.AutoField(primary_key=True)
-    playerid = models.ForeignKey(Player)
-    problemid = models.ForeignKey(Problem)
-    submissionid = models.ForeignKey(Submission)
-    score = models.FloatField(default=0)
-    
-    class Meta:
-        unique_together = (("playerid", "problemid","submissionid"),)
-        

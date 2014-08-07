@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
-from mainapp.models import Problem
+from mainapp.models import Problem,Player
 
 import os
 
@@ -21,7 +21,9 @@ def authenticate_user(request):
         return False
     
 def save_question(request):
-    p = Problem(name=request.POST['title'],description=request.POST['description'],difficulty='Intermediate')
+    p = Problem(name=request.POST['title'],description=request.POST['description'],difficulty=request.POST['difficulty'],
+                timelimit = request.POST['timelimit'], score = request.POST['score']
+                )
     p.save()
     DIR = os.path.dirname(os.path.dirname(__file__)) + '/media'
     newpath = DIR + '/question_' + str(p.id)
@@ -51,5 +53,13 @@ def get_problems():
 
 def get_problem_details(id):
     p = Problem.objects.get(id=id)
-    data = {'id':id,'name':p.name,'description':p.description}
+    data = {'id':id,'name':p.name,'description':p.description,'difficulty':p.difficulty,'timelimit':p.timelimit,'score':p.score}
     return data
+
+def leaderboard():
+    leaderboard = []
+    players = Player.objects.order_by('totalscore').reverse()
+    for player in players:
+        data = {"name" : player.name, "score" : player.totalscore}
+        leaderboard.append(data)
+    return leaderboard

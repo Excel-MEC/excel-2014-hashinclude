@@ -1,12 +1,12 @@
 import os, re, sys, threading, time, urllib
-from mainapp.models import Submission
+from mainapp.models import Submission, Problem, Player
 import filecmp
 from multiprocessing import Process
 
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 class solution_verificationThread(threading.Thread):
-    def __init__(self, threadID, name, counter,submissionid, problemid,folder_name):
+    def __init__(self, threadID, name, counter,submissionid, problemid,folder_name,userid):
         super(solution_verificationThread, self).__init__()
         self._stop = threading.Event()
         self.threadID = threadID
@@ -15,16 +15,17 @@ class solution_verificationThread(threading.Thread):
         self.submissionid = submissionid
         self.problemid = problemid
         self.foldername = folder_name
+        self.userid = userid
     def run(self):
         print "Starting " + self.name
-        solution_verification(self.submissionid,self.problemid,self.foldername)
+        solution_verification(self.submissionid,self.problemid,self.foldername,self.userid)
         print "Exiting " + self.name
     def stop(self):
         self._stop.set()
 
 
 class killThread (threading.Thread):
-    def __init__(self, threadID, name, counter,code_name, lang, submissionid,problemid,foldername):
+    def __init__(self, threadID, name, counter,code_name, lang, submissionid,problemid,foldername,userid):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name
@@ -34,9 +35,10 @@ class killThread (threading.Thread):
         self.submissionid = submissionid
         self.problemid = problemid
         self.foldername = foldername
+        self.userid = userid
     def run(self):
         print "Starting " + self.name
-        kill(self.code_name,self.lang,self.submissionid,self.problemid,self.foldername)
+        kill(self.code_name,self.lang,self.submissionid,self.problemid,self.foldername,self.userid)
         print "Exiting " + self.name
 
 
@@ -62,7 +64,6 @@ class execThread (threading.Thread):
 def ioe_redirect_create(submissionid='',foldername='',problemid=''):
     BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     ioeredirect  = " 0<"+str(BASE_PATH)+"/mainapp/media/question_"+str(problemid)+"/testcases.txt 1>"+str(BASE_PATH)+"/mainapp/media"+str(foldername)+"/output-"+str(submissionid)+".txt 2>"+str(BASE_PATH)+"/mainapp/media"+str(foldername)+"/error-"+str(submissionid)+".txt"
-    print ioeredirect
     return ioeredirect
 
 #clean out all system level calls in c 
@@ -120,13 +121,15 @@ def execution_engine(code_name, lang, compiled,submissionid,problemid,foldername
     ioeredirect=ioe_redirect_create(submissionid,foldername,problemid)
     starttime = time.time()
     running = 1
-    print "./ "+code_name+ioeredirect
     if   lang == "C"    :  os.system(code_name+ioeredirect)
     elif lang == "C++"  :  os.system(code_name+ioeredirect)
     elif lang == "Java" : os.system("java "+code_name+".class"+ioeredirect)
     running = 100
     endtime = time.time()
     timediff = endtime-starttime
+    c = Submission.objects.get(id=submissionid)
+    c.timetaken = timediff
+    c.save()
     print "\nThread completed ! "
     print "Stage 2 : execution completed in : " 
     os.system("rm "+code_name)
@@ -135,8 +138,9 @@ def execution_engine(code_name, lang, compiled,submissionid,problemid,foldername
 
 
 #force killing of a thread after Timelimit for the problem.
-def kill(code_name,lang,submissionid,problemid,foldername):
-    timelimit=1
+def kill(code_name,lang,submissionid,problemid,foldername,userid):
+    p = Problem.objects.get(id = problemid)
+    timelimit=p.timelimit
     c = Submission.objects.get(id=submissionid)
     p = Process(target=execution_engine, args=(code_name, lang, 1,submissionid,problemid,foldername,))
     p.start()
@@ -149,24 +153,36 @@ def kill(code_name,lang,submissionid,problemid,foldername):
         os.kill(p.pid, 0)
         c = Submission.objects.get(id=submissionid)
         c.status = "Timeout"
+        c.timetaken = timelimit
         c.save()
+        p = Player.objects.get(userid_id=userid)
+        p.totalsubmissions = p.totalsubmissions + 1
+        p.save()
         time.sleep(0.5)
         os.system("kill -9 "+str(p.pid))
         print "Force killed Execution"
         return True
     except OSError:
-        thread3 = solution_verificationThread(3, "Thread-SolVerification", 3,str(submissionid), str(problemid),str(foldername))
+        thread3 = solution_verificationThread(3, "Thread-SolVerification", 3,str(submissionid), str(problemid),str(foldername),userid)
         thread3.start()
         return False
 
-def solution_verification(submissionid, problemid,foldername):
+def solution_verification(submissionid, problemid,foldername,userid):
     solutionpath = str(BASE_PATH)+"/mainapp/media/question_"+problemid+"/output.txt"
     playeroutputpath = str(BASE_PATH)+"/mainapp/media"+foldername+"/output-"+submissionid+".txt"
     S = Submission.objects.get(id=submissionid)
-    print solutionpath
-    print playeroutputpath
     if filecmp.cmp(solutionpath, playeroutputpath):
+        pl = Player.objects.get(userid_id=userid)
+        pl.totalsubmissions = pl.totalsubmissions + 1
+        pl.totalsolutions = pl.totalsolutions + 1
+        p = Problem.objects.get(id=problemid)
+        pl.totalscore = pl.totalscore+p.score 
+        pl.save()
+        S.score = p.score
         S.status = "Success"
     else:
+        pl = Player.objects.get(userid_id=userid)
+        pl.totalsubmissions = pl.totalsubmissions + 1
+        pl.save()
         S.status = "Failed testcases"
     S.save()
