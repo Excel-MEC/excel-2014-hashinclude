@@ -139,8 +139,8 @@ def execution_engine(code_name, lang, compiled,submissionid,problemid,foldername
 
 #force killing of a thread after Timelimit for the problem.
 def kill(code_name,lang,submissionid,problemid,foldername,userid):
-    p = Problem.objects.get(id = problemid)
-    timelimit=p.timelimit
+    prob = Problem.objects.get(id = problemid)
+    timelimit=prob.timelimit
     c = Submission.objects.get(id=submissionid)
     p = Process(target=execution_engine, args=(code_name, lang, 1,submissionid,problemid,foldername,))
     p.start()
@@ -155,9 +155,9 @@ def kill(code_name,lang,submissionid,problemid,foldername,userid):
         c.status = "Timeout"
         c.timetaken = timelimit
         c.save()
-        p = Player.objects.get(userid_id=userid)
-        p.totalsubmissions = p.totalsubmissions + 1
-        p.save()
+        pl = Player.objects.get(userid_id=userid)
+        pl.totalsubmissions = pl.totalsubmissions + 1
+        pl.save()
         time.sleep(0.5)
         os.system("kill -9 "+str(p.pid))
         print "Force killed Execution"
@@ -175,10 +175,10 @@ def solution_verification(submissionid, problemid,foldername,userid):
         pl = Player.objects.get(userid_id=userid)
         pl.totalsubmissions = pl.totalsubmissions + 1
         pl.totalsolutions = pl.totalsolutions + 1
-        p = Problem.objects.get(id=problemid)
-        pl.totalscore = pl.totalscore+p.score 
+        pr = Problem.objects.get(id=problemid)
+        pl.totalscore = pl.totalscore+pr.score 
         pl.save()
-        S.score = p.score
+        S.score = pr.score
         S.status = "Success"
     else:
         pl = Player.objects.get(userid_id=userid)
