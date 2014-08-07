@@ -44,7 +44,9 @@ def problem(request):
     c = {'q': details}
     if request.FILES:
         submissionid = save_submission(request,id)
-        if submissionid>0:
+        if type(submissionid) == type("s"):
+            c['messages']=submissionid
+        elif submissionid>0:
             c['messages']="Upload Successful."
             c['message_compilation'] = compile_submission(request,submissionid,id)
         else:
