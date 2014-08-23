@@ -167,10 +167,24 @@ def kill(code_name,lang,submissionid,problemid,foldername,userid):
         thread3.start()
         return False
 
+def clean(file):
+    f=open(file,'r+')
+    lines = [line.strip() for line in f.read()]
+    op = [line for line in lines if line!=""]
+    f.seek(0,0)
+    for line in op:
+        f.write(line+'\n');
+    f.truncate()
+    f.close()
+    f=open(file,'r')
+    str=f.read()
+    print str
+
 def solution_verification(submissionid, problemid,foldername,userid):
     solutionpath = str(BASE_PATH)+"/mainapp/media/question_"+problemid+"/output.txt"
     playeroutputpath = str(BASE_PATH)+"/mainapp/media"+foldername+"/output-"+submissionid+".txt"
     S = Submission.objects.get(id=submissionid)
+    clean(playeroutputpath)
     if filecmp.cmp(solutionpath, playeroutputpath):
         pl = Player.objects.get(userid_id=userid)
         pl.totalsubmissions = pl.totalsubmissions + 1

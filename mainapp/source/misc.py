@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
 from mainapp.models import Problem,Player
+from judge.source.judge import clean
 
 import os
 
@@ -36,10 +37,12 @@ def save_question(request):
     with open(str(BASE_PATH)+'/media/'+foldername+'output.txt', 'wb') as destination:
         for chunk in file.chunks():
               destination.write(chunk)
+    clean(str(BASE_PATH)+'/media/'+foldername+'output.txt')
     file = request.FILES.get('testcases') 
     with open(str(BASE_PATH)+'/media/'+foldername+'testcases.txt', 'wb') as destination:
         for chunk in file.chunks():
             destination.write(chunk)
+    clean(str(BASE_PATH)+'/media/'+foldername+'testcases.txt')
     return True
 
 def get_problems():
