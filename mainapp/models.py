@@ -16,7 +16,7 @@ class Player(models.Model):
 class Problem(models.Model):
     id=models.AutoField(primary_key=True)    
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=5000)
+    description = models.TextField(max_length=5000)
     score = models.FloatField(default=0)
     timelimit = models.FloatField(default=1)
     difficulty = models.CharField(max_length=50)
