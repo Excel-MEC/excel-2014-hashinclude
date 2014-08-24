@@ -200,5 +200,3 @@ def solution_verification(submissionid, problemid,foldername,userid):
         pl.save()
         S.status = "Failed testcases"
     S.save()
-
-clean('/home/kevin/input.txt')
