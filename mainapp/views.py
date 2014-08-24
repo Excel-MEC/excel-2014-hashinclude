@@ -61,8 +61,8 @@ def allproblems(request):
     print "here"
     return render_to_response("allproblems.html",c)
 
-def login(request):
-    errors = []
+def login(request,msg=""):
+    errors = [msg]
     if request.method == 'POST':
         if not request.POST.get('username', ''):
             errors.append('Enter username.')
@@ -108,7 +108,7 @@ def signup(request):
             errors.append('Enter a college.')
         if not errors:
             if register_player(request.POST):
-                return HttpResponseRedirect('/login/')
+                return HttpResponseRedirect('/login/',"Registration Successful")
             else:
                 errors.append('Error, Try again')
     c = {'errors' : errors}

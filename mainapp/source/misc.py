@@ -63,6 +63,6 @@ def leaderboard():
     leaderboard = []
     players = Player.objects.order_by('totalscore').reverse()
     for player in players:
-        data = {"name" : player.name, "score" : player.totalscore}
+        data = {"name" : player.userid.username, "score" : player.totalscore}
         leaderboard.append(data)
     return leaderboard
