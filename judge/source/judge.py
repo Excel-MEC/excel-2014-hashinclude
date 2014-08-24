@@ -1,5 +1,5 @@
 import os, re, sys, threading, time, urllib
-from mainapp.models import Submission, Problem, Player
+#from mainapp.models import Submission, Problem, Player
 import filecmp
 from multiprocessing import Process
 
@@ -169,11 +169,11 @@ def kill(code_name,lang,submissionid,problemid,foldername,userid):
 
 def clean(file):
     f=open(file,'r+')
-    lines = [line.strip() for line in f.read()]
-    op = [line for line in lines if line!=""]
+    lines = f.read().split("\n")
     f.seek(0,0)
-    for line in op:
-        f.write(line+'\n');
+    for i in lines:
+        if i:
+            f.write(i+'\n');
     f.truncate()
     f.close()
     f=open(file,'r')
@@ -200,3 +200,5 @@ def solution_verification(submissionid, problemid,foldername,userid):
         pl.save()
         S.status = "Failed testcases"
     S.save()
+
+clean('/home/kevin/input.txt')
