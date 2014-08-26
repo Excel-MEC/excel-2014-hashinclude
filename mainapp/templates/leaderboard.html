@@ -1,79 +1,242 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Web Application</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+        <!-- needs images, font... therefore can not be part of ui.css -->
+         
+         
+        <link rel="stylesheet" href={% static "css/bower_components/font-awesome/css/font-awesome.min.css" %}>
+        <link rel="stylesheet" href={% static "css/bower_components/weather-icons/css/weather-icons.min.css" %}>
+        
+        <link href={% static "css/bootstrap.css" %} rel="stylesheet" type="text/css">
+         <link href={% static "css/bootstrap-theme.css" %} rel="stylesheet" type="text/css">
+         
+            <link rel="stylesheet" href={% static "styles/main.css"%}>
+         <link rel="stylesheet" type="text/css" href={% static "css/custom.css"%}>
+          <script type="text/javascript" src={% static "js/modernizr.custom.79639.js"%}></script> 
 
-    <title>onlineJudge</title>
-    	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+          
+          
 
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-    <![endif]-->
-  </head>
-
-  <body>
-
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li ><a href="/home/">Home</a></li>
-          <li><a href="/profile/">My Profile</a></li>
-          <li class="active"><a href="/leaderboard/">leaderboard</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-        <h3 class="text-muted">Online Judge</h3>
-      </div>
-      <br/>
-      <div class="jumbotron">
-        <h1>Leaderboard</h1>
-       	<div class="container">
-          <h2 class="sub-header"></h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Score</th>
-                </tr>
-              </thead>
-              <tbody>
-              	{% for player in leaderboard %}
-                <tr>
-                <td>
-                	{{forloop.counter}}
-                </td>
-                <td>
-               		{{player.name}}
-                </td>
-                <td>
-                	{{player.score}}
-                </td>
-               	</tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-
-      </div>
-
-      
-
-    </div> <!-- /container -->
+        <!-- end needs images -->
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-  </body>
+
+           
+
+
+    </head>
+    <body >
+        <!--[if lt IE 9]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+         <div class="contain shadowheading" style="background-color:black;width:100%">
+        <div class="row">
+            <header>
+               <div class="pull-left" >
+                <img class=" dimension1" src={% static "img/mec.png"%} class="img-responsive" alt="Responsive image">
+               </div>
+               <div class="pull-left text"><p>in association with</p>
+                <img class="dimension2" src={% static "img/ieee.png" %} class="img-responsive" alt="Responsive image">
+               </div>
+               <div class="pull-right"><img class="dimension3" src={% static"img/logo.png" %} class="img-responsive" alt="Responsive image">
+               </div>
+            </header>
+        </div>
+    </div>
+
+<div class="jumbotron includemain">
+  <h1><center>#include </center></h1>
+
+  
+</div>
+
+ <script src={% static "scripts/vendor.js" %}></script>
+
+        <script src={% static "scripts/ui.js" %}></script>
+
+
+
+        <script src={% static "scripts/app.js" %}></script>
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src={% static "js/bootstrap.min.js" %}></script>
+
+
+<div id="nav-wrapper">
+    <ul id="nav" class="navcontrol col-md-2" 
+     
+        data-collapse-nav
+        data-slim-scroll
+        data-highlight-active>
+        <li>
+            <a href="/question"><i class="fa fa-question-circle"><span class="icon-bg bg-primary-light"></span></i>Questions</a>
+           
+        </li>
+
+       
+        <li>
+            <a href="/profile"><i class="fa fa-user"><span class="icon-bg bg-orange"></span></i>Profile<span data-i18n="Profile"></span></a>
+            
+        </li>
+        <li>
+            <a href="/leaderboard"><i class="fa fa-trophy"><span class="icon-bg bg-success"></span></i>Leader Board</a>
+            
+        </li>
+         <li><a href="/submission"> <i class="fa fa-align-justify"><span class="icon-bg bg-danger"></span></i>My Submissions</a></li>
+        
+        
+        <li>
+            <a href="/contactus">
+                <i class="fa fa-phone"><span class="icon-bg bg-info"></span></i>Contact<span data-i18n="Contact"></span>
+               
+            </a>
+        </li>
+        <li>
+            <a href="/rules"><i class="fa fa-book"><span class="icon-bg bg-warning"></span></i>Rules<span data-i18n="Rules"></span></a>
+            
+        </li>
+               <li>
+            <a href="/signin"><i class="fa fa-unlock"><span class="icon-bg bg-violet"></span></i>Sign out<span data-i18n="Sign out"></span></a>
+         
+        </li>
+    </ul>
+
+    <div class="page col-md-10">
+    <section class="panel panel-default noborder">
+        <div class="panel-body text-center">
+
+                <h1> Leader Board </h1>
+                 </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    
+                        <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                        <th>College</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                       <td>
+                       <img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
+                       Test1</td>
+                        <td>2000</td>
+                        <td>MEC</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>2</td>                        
+                        <td>  <img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
+                        Test 2</td>
+                        <td>1942</td>
+                        <td>MEC</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
+                        Test 3</td>
+                        <td>1880</td>
+                        <td>MACE</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
+                        Sample</td>
+                        <td>1700</td>
+                        <td>MEC</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>
+                        <img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>user</td>
+                        <td>1600</td>
+                        <td>MIT</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
+                        Dr</td>
+                        <td>1500</td>
+                        <td>IIT Delhi</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
+                        The Graduate</td>
+                        <td>100</td>
+                        <td>GEC</td>
+                       
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
+                        abc</td>
+                        <td>900</td>
+                        <td>MEC</td>
+                       
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
+                        xyz</td>
+                        <td>500</td>
+                        <td>MEC</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
+                        I</td>
+                        <td>200</td>
+                        <td>MEC</td>
+                        
+                    </tr>
+                    </tbody>
+               </table>
+            </div>
+
+        </div>
+    </section>
+
+    </div>
+ 
+
+
+      <div class="panel-body text-center">
+    <ul class="pagination">
+  <li><a href="#">&laquo;</a></li>
+  <li><a href="#">1</a></li>
+  <li><a href="#">2</a></li>
+  <li><a href="#">3</a></li>
+  <li><a href="#">4</a></li>
+  <li><a href="#">5</a></li>
+  <li><a href="#">&raquo;</a></li>
+</ul>
+</div>
+</div>
+
+
+
+</div>
+   
+
+</body>
 </html>
