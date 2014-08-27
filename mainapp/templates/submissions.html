@@ -108,135 +108,72 @@
         </li>
     </ul>
 
-    <div class="page col-md-10">
+       <div class="page col-md-8">
+   
+
+
     <section class="panel panel-default noborder">
-        <div class="panel-body text-center">
+        <div class="panel-body text-left">
 
-                <h1> Leader Board </h1>
-                 </div>
+                <h1> Submissions</h1>
+                 
 
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                    
-                        <thead>
+               
+
+                     <button class="btn btn-w-md btn-gap-v btn-line-default  pull-right" type="button">
+
+        Sort by Date
+
+                         </button>
+           <button class="btn btn-w-md btn-gap-v btn-line-default  pull-right" type="button">
+
+        Sort by Challenge
+
+              </button>
+             
+</div>
+              
+
+            <table class="responsive table table-striped">
+                <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Name</th>
-                        <th>Score</th>
-                        <th>College</th>
+                        <th>Problem</th>
+                        <th>Time</th>
+                        <th>Result</th>
+                        <th>score</th>
                         
                     </tr>
                 </thead>
-                <tbody>
+ 
+
+                      <tbody>
                     <tr>
-                        <td>1</td>
-                       <td>
-                       <img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
-                       Test1</td>
-                        <td>2000</td>
-                        <td>MEC</td>
-                        
-                    </tr>
-                    <tr>
-                        <td>2</td>                        
-                        <td>  <img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
-                        Test 2</td>
-                        <td>1942</td>
-                        <td>MEC</td>
-                        
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
-                        Test 3</td>
-                        <td>1880</td>
-                        <td>MACE</td>
-                        
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
-                        Sample</td>
-                        <td>1700</td>
-                        <td>MEC</td>
-                        
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>
-                        <img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>user</td>
-                        <td>1600</td>
-                        <td>MIT</td>
-                        
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
-                        Dr</td>
-                        <td>1500</td>
-                        <td>IIT Delhi</td>
-                        
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
-                        The Graduate</td>
-                        <td>100</td>
-                        <td>GEC</td>
-                       
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
-                        abc</td>
-                        <td>900</td>
-                        <td>MEC</td>
-                       
-                    </tr>
-                    <tr>
-                        <td>9</td>
-                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
-                        xyz</td>
-                        <td>500</td>
-                        <td>MEC</td>
-                        
-                    </tr>
-                    <tr>
+                        <th><div class="questionheading">Solve me first</div></th>
+                       <td>2 days ago</td>
+                        <td><div class="questionheading">Accepted<i class="fa fa-check"></i></div></td>
                         <td>10</td>
-                        <td><img class="img-circle img30_30" alt="" src={% static "img/user.png" %}></img>
-                        I</td>
-                        <td>200</td>
-                        <td>MEC</td>
+                        <td><button class="btn btn-w-md btn-gap-v btn-line-default  pull-right " type="button">View Program </button></td>
+                        
+                    </tr>
+                    <tr>
+                        <th><div class="questionheading">Solve me first</div></th>
+                       <td>5 days ago</td>
+                        <td><div class="rejected">Rejected<i class="fa fa-times"></i></div></td>
+                        <td>10</td>
+                        <td><button class="btn btn-w-md btn-gap-v btn-line-default   pull-right " type="button">View Program </button></td>
+                        
+                    </tr>
+                    <tr>
+                        <th><div class="questionheading">Solve me first</div></th>
+                       <td>10 days ago</td>
+                        <td><div class="rejected">Rejected<i class="fa fa-times"></i></div></td>
+                        <td>10</td>
+                        <td><button class="btn btn-w-md btn-gap-v btn-line-default   pull-right " type="button">View Program </button></td>
                         
                     </tr>
                     </tbody>
-               </table>
-            </div>
+                    
 
-        </div>
-    </section>
-
-    </div>
- 
-
-
-      <div class="panel-body text-center">
-    <ul class="pagination">
-  <li><a href="#">&laquo;</a></li>
-  <li><a href="#">1</a></li>
-  <li><a href="#">2</a></li>
-  <li><a href="#">3</a></li>
-  <li><a href="#">4</a></li>
-  <li><a href="#">5</a></li>
-  <li><a href="#">&raquo;</a></li>
-</ul>
-</div>
-</div>
-
-
-
-</div>
-   
 
 </body>
 </html>

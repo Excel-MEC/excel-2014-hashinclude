@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^allproblems',allproblems),
     url(r'^problem',problem),
     url(r'^createquestion',createquestion),
+    url(r'^contactus',contactus),
     
     #url(r'^uploadsubmission', upload_submission),
     
