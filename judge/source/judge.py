@@ -1,5 +1,5 @@
 import os, re, sys, threading, time, urllib
-#from mainapp.models import Submission, Problem, Player
+from mainapp.models import Submission, Problem, Player
 import filecmp
 from multiprocessing import Process
 
