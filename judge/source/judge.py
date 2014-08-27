@@ -67,7 +67,8 @@ def ioe_redirect_create(submissionid='',foldername='',problemid=''):
     return ioeredirect
 
 #clean out all system level calls in c 
-def cleaner(code_name, lang):
+def cleaner(code_name, lang, submissionid):
+    S = Submission.objects.get(id=submissionid)
     print "\nStage 0 : Cleaning "
     if lang == "C" or lang == "C++":
         if lang == "C":
@@ -84,6 +85,8 @@ def cleaner(code_name, lang):
                 if danger in line:
                     print "Error : Potential threat detected !"
                     print "Line  : "+line
+                    S.safe = False
+                    S.save()
                     cleaned +=1 ;
     else:
         print "Error : unidentified lang"

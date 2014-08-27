@@ -56,12 +56,15 @@ def compile_submission(request,submissionid,problemid):
     foldername = '/'+str(request.user.username)+'_'+str(request.user.id)
     file = str(BASE_PATH)+'/media'+foldername+'/'+filename
     lang = ext_to_lang_dict[extension]
-    cleaner(file, lang)
+    cleaner(file, lang, submissionid)
     S = Submission.objects.get(id=submissionid)
-    if compilation_engine(file,lang,submissionid,problemid,foldername)==1:
+    if compilation_engine(file,lang,submissionid,problemid,foldername)==1 and S.safe==True:
         thread1 = killThread(1, "Thread-kill", 1,str(file),str(lang),submissionid,problemid,str(foldername),request.user.id)
         thread1.start()
         return "Queued for execution"
+    elif S.safe==False:
+        S.status = "Unsafe Code, could not execute."
+        S.save()
     else:
         S.status = "Compilation Error"
         S.save()

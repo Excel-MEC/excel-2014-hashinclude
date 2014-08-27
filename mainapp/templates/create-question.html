@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+    {% if errors %}
+        <ul>
+            {% for error in errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+<br />
+<form enctype="multipart/form-data" action="/createquestion/" method="post">
+{% csrf_token %}
+<div class="input-group">
+  <input type="text" class="form-control" placeholder="title" name='title'>
+</div>
+<br />
+<div class="input-group">
+	<textarea name="description"></textarea>
+</div>
+<div class="input-group">
+  <input type="text" class="form-control" placeholder="score" name='score'>
+</div>
+<div class="input-group">
+  <input type="text" class="form-control" placeholder="timelimit" name='timelimit'>
+</div>
+<div class="input-group">
+  <input type="text" class="form-control" placeholder="difficulty" name='difficulty'>
+</div>
+<div class="input-group">
+Testcases : <input type="file" name="testcases" id="testcases"/>
+<br />
+Output :    <input type="file" name="output" id="output"/>
+<br />
+</div>
+<br />
+<div class="input-group">
+	<input type="submit" value="Submit">
+</div>
+</form>
+
+</div>
+
+{% endblock %}

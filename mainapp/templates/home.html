@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,30 +27,31 @@
     <div class="container">
       <div class="header">
         <ul class="nav nav-pills pull-right">
-          <li ><a href="/home">Home</a></li>
-          <li class="active"><a href="/home">Questions</a></li>
-          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li class="active"><a href="/home/">Home</a></li>
+          <li><a href="/profile/">My Profile</a></li>
+          <li><a href="/leaderboard/">Leaderboard</a></li>
           <li><a href="#">Contact</a></li>
+          <li><a href="/logout">Logout</a></li>
         </ul>
         <h3 class="text-muted">Online Judge</h3>
       </div>
       <br/>
-     
-       <div class="row">
-
-        <div class="col-sm-8 blog-main">
-
-          <div class="blog-post">
-            <h1 class="blog-post-title">{{profile.name}}</h1>
-            Email : {{profile.email}} <br />
-            Total Score : {{profile.totalscore}} <br />
-            Success Rate : {{profile.successrate}} <br />
-            Total Submissions : {{profile.totalsubmissions}} <br />
-          </div><!-- /.blog-post -->
-          	
-
+      <div class="jumbotron">
+        <h1>Home - {{user}}</h1>
       </div>
-      </div>
+      
+	<h2>Problems</h2>
+	<div>
+		{% for problem in problems %}
+		<a href="/problem?id={{problem.id}}">{{problem.name}}</a><br />
+		{% endfor %}
+	</div>
+	<h2>Submission</h2>
+    <div>
+		{% for submission in submissions %}
+		<p>Submission {{forloop.counter}} - {{submission.status}}</p><br />
+		{% endfor %}
+	</div>
       
 
     </div> <!-- /container -->

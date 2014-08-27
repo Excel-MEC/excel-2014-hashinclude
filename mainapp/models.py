@@ -30,4 +30,4 @@ class Submission(models.Model):
     language = models.CharField(max_length=50)
     timetaken = models.IntegerField(default=-1)
     timestamp = models.DateTimeField(auto_now=True)
-         
+    safe = models.BooleanField(default=True)

@@ -25,7 +25,7 @@ def index(request):
                     errors.append('Invalid Credentials')  
     c = {'errors' : errors}
     c.update(csrf(request))
-    return render_to_response("signin.html",c)
+    return render_to_response("index.html",c)
 
 def contactus(request):
     return render_to_response("contactus.html")
@@ -79,7 +79,7 @@ def login(request,msg=""):
                     errors.append('Invalid Credentials')  
     c = {'errors' : errors}
     c.update(csrf(request))
-    return render_to_response("signin.html",c)
+    return render_to_response("index.html",c)
 
 @login_required(login_url='/login/')
 def home(request):
@@ -90,7 +90,7 @@ def home(request):
     c['user']=request.user.username
     c['problems'] = get_problems()
     c.update(csrf(request))
-    return render_to_response("profile.html",c,context_instance=RequestContext(request))
+    return render_to_response("home.html",c,context_instance=RequestContext(request))
 
 def logout(request):
     logout_player(request)

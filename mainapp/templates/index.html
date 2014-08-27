@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
+{% load staticfiles %}
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,31 +25,41 @@
     <div class="container">
       <div class="header">
         <ul class="nav nav-pills pull-right">
-          <li ><a href="/home">Home</a></li>
-          <li class="active"><a href="/home">Questions</a></li>
-          <li><a href="leaderboard.html">Leaderboard</a></li>
-          <li><a href="#">Contact</a></li>
+          <li class="active"><a href="/home">Home</a></li>
+         
         </ul>
         <h3 class="text-muted">Online Judge</h3>
       </div>
       <br/>
-     
-       <div class="row">
+      <div class="jumbotron">
+        <h1>Welcome!</h1>
+       	<div class="container">
 
-        <div class="col-sm-8 blog-main">
-
-          <div class="blog-post">
-            <h1 class="blog-post-title">{{profile.name}}</h1>
-            Email : {{profile.email}} <br />
-            Total Score : {{profile.totalscore}} <br />
-            Success Rate : {{profile.successrate}} <br />
-            Total Submissions : {{profile.totalsubmissions}} <br />
-          </div><!-- /.blog-post -->
-          	
-
+      	<form class="form-signin" role="form" action="/index/" method="post">{% csrf_token %}
+        	<h2 class="form-signin-heading">Please sign in</h2>
+        		<div class="col-lg-4">
+        		<p>{% for error in errors %}{{error}} <br \>{% endfor %}</p>
+        		<input type="text" class="form-control" placeholder="Username" name="username" required autofocus>
+        		<input type="password" class="form-control" placeholder="Password" name="password" required>
+        		</div>
+        		
+        	<div class="checkbox">
+          	<label>
+            	<input type="checkbox" value="remember-me"> Remember me
+         	</label><br/>
+        	</div>
+       	 <button class="btn btn-lg btn-primary " type="submit" value="Submit">Sign in</button>
+      	</form>
+      	
+      	<br/><br/><br/>
+    	</div> <!-- /container -->
+        <p><a class="btn btn-lg btn-success" href="/signup/" role="button">Sign up</a></p>
       </div>
-      </div>
+
       
+      <div class="footer">
+        <p>&copy; Excel 2014</p>
+      </div>
 
     </div> <!-- /container -->
 
