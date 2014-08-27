@@ -74,14 +74,13 @@ def cleaner(code_name, lang):
             filename = code_name+".c"
         else:
             filename = code_name+".cpp"
-            
         #filter out dangerous functions and headers
-        dangers_c = ['system(','fork(','<CON','execl(','wait(','exit(','<signal.h>','<fcntl.h>','socket.h']
+        dangers = ['system(','fork(','<CON','execl(','execlp(','wait(','<signal.h>','<fcntl.h>','socket.h','unistd.h','<csignal>','<thread>','pthread.h','syscall','CreateProcess','ShellExecute','sys/','netinet/in.h','netdb.h','kill(']
         lines = [line.strip() for line in open(filename)]
         #remove all white spaces from each line and then filter out the danger
         for line in lines:
             line = re.sub(r'\s+', '', line)
-            for danger in dangers_c:
+            for danger in dangers:
                 if danger in line:
                     print "Error : Potential threat detected !"
                     print "Line  : "+line
