@@ -1,62 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+{% extends "base.html" %}
+{% load staticfiles %}
 
-    <title>onlineJudge</title>
-    	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+{% block content %}
 
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<div class="view-container">
 
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <section id="content" class="animate-fade-up ng-scope" data-ng-view="">
+        <div class="page page-dashboard ng-scope" data-ng-controller="DashboardCtrl">
+ 
 
-    <![endif]-->
-  </head>
+  <div class="page page-profile noborder">
 
-  <body>
+    <div class="row">
+        <div class="col-md-5">
 
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li ><a href="/home">Home</a></li>
-          <li class="active"><a href="/home">Questions</a></li>
-          <li><a href="leaderboard.html">Leaderboard</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-        <h3 class="text-muted">Online Judge</h3>
-      </div>
-      <br/>
-     
-       <div class="row">
+            <div class="panel panel-profile noborder">
+                <div class="panel-heading bg-primary clearfix">
+                    <a href="" class="pull-left profile">
+                        <img alt="" src="{% static  "img/profile.jpg" %}" class="img-circle img80_80">
+                    </a>
+                    <h3>{{profile.name}}</h3>
+                    <p>{{profile.college}}</p>
+                </div>
+                
+            </div>
 
-        <div class="col-sm-8 blog-main">
+            <div class="row">
+                <div class="col-sm-6">
+                    <section class="panel panel-box noborder">
+                        <div class="panel-top bg-facebook">
+                            <div class="divider divider"></div>
+                            <i class="fa fa-facebook size-h1"></i>
+                            <div class="divider divider"></div>
+                        </div>
+                        <div class="list-justified-container">
+                            <ul class="list-justified text-center">
+                                <li>
+                                   <a href="http://www.facebook.com/">
+                                    <p class="text-muted">Post my score</p></a>
+                                </li>
+                                <li>
+                                    <a href="http://www.facebook.com/">
+                                    <p class="text-muted">Invite my friends</p></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-sm-6">
+                    <section class="panel panel-box noborder">
+                        <div class="panel-top bg-twitter">
+                            <div class="divider divider"></div>
+                            <i class="fa fa-twitter size-h1"></i>
+                            <div class="divider divider"></div>
+                        </div>
+                        <div class="list-justified-container">
+                            <ul class="list-justified text-center">
+                                <li>
+                                    
+                                    <p class="text-muted">Tweet my score </p>
+                                </li>
+                                <li>
+                                   
+                                    <p class="text-muted">Tweet about the event</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>                        
+                </div>
+            </div>
+         </div> 
+        <div class="col-md-5">
 
-          <div class="blog-post">
-            <h1 class="blog-post-title">{{profile.name}}</h1>
-            Email : {{profile.email}} <br />
-            Total Score : {{profile.totalscore}} <br />
-            Success Rate : {{profile.successrate}} <br />
-            Total Submissions : {{profile.totalsubmissions}} <br />
-          </div><!-- /.blog-post -->
-          	
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel mini-box noborder ">
+                        <span class="box-icon bg-warning ">
+                            <i class="fa fa-sun-o noline"></i>
+                        </span>
+                        <div class="box-info ">
+                            <p class="size-h2">{{profile.problemsviewed}}</p>
+                            <p class="text-muted">Questions seen</p>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel mini-box noborder ">
+                        <span class="box-icon bg-info ">
+                            <i class="fa fa-check noline"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{profile.totalsolutions}}</p>
+                            <p class="text-muted">Correct Submissions</p>
 
-      </div>
-      </div>
-      
+                        </div>
+                    </div>                    
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel mini-box noborder">
+                        
+                        <span class="box-icon bg-info ">
+                            <i class="fa fa-graduation-cap noline"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{profile.totalscore}}</p>
+                            <p class="text-muted">My Score</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel mini-box noborder">
+                         <span class="box-icon bg-danger ">
+                            <i class="fa fa-times noline"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{profile.wrongsolutions}}</p>
+                            <p class="text-muted">Wrong submissions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                      
+</div>
 
-    </div> <!-- /container -->
+</div>
+</div>
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-  </body>
-</html>
+</div>
+{% endblock %}

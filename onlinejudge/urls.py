@@ -22,10 +22,11 @@ urlpatterns = patterns('',
     url(r'^leaderboard',leaders),
     url(r'^profile',profile),
     url(r'^allproblems',allproblems),
-    url(r'^problem',problem),
+    url(r'^submit',problem),
     url(r'^createquestion',createquestion),
     url(r'^contactus',contactus),
-    
+    url(r'^rules',rules),
+    url(r'^submission',submission),
     #url(r'^uploadsubmission', upload_submission),
     
     url(r'^admin/', include(admin.site.urls)),

@@ -78,6 +78,7 @@ def cleaner(code_name, lang, submissionid):
         #filter out dangerous functions and headers
         dangers = ['system(','fork(','<CON','execl(','execlp(','wait(','<signal.h>','<fcntl.h>','socket.h','unistd.h','<csignal>','<thread>','pthread.h','syscall','CreateProcess','ShellExecute','sys/','netinet/in.h','netdb.h','kill(']
         lines = [line.strip() for line in open(filename)]
+        cleaned = 0
         #remove all white spaces from each line and then filter out the danger
         for line in lines:
             line = re.sub(r'\s+', '', line)
@@ -87,7 +88,7 @@ def cleaner(code_name, lang, submissionid):
                     print "Line  : "+line
                     S.safe = False
                     S.save()
-                    cleaned +=1 ;
+                    cleaned +=1
     else:
         print "Error : unidentified lang"
 

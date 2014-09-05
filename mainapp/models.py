@@ -3,6 +3,14 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class Problem(models.Model):
+    id=models.AutoField(primary_key=True)    
+    name = models.CharField(max_length=50)
+    description = models.TextField(max_length=5000)
+    score = models.FloatField(default=0)
+    timelimit = models.FloatField(default=1)
+    difficulty = models.CharField(max_length=50)
+
 class Player(models.Model):
     id=models.AutoField(primary_key=True)
     userid = models.ForeignKey(User)
@@ -12,14 +20,12 @@ class Player(models.Model):
     totalscore = models.FloatField(default=0)
     totalsolutions = models.IntegerField(default=0)
     totalsubmissions = models.IntegerField(default=0)
+    problems_viewed = models.ManyToManyField(Problem,blank=True,null=True)
 
-class Problem(models.Model):
-    id=models.AutoField(primary_key=True)    
-    name = models.CharField(max_length=50)
-    description = models.TextField(max_length=5000)
-    score = models.FloatField(default=0)
-    timelimit = models.FloatField(default=1)
-    difficulty = models.CharField(max_length=50)
+class PlayerProblemViewTime(models.Model):
+    playerid = models.ForeignKey(Player)
+    problemid = models.ForeignKey(Problem)
+    viewtime = models.DateTimeField(auto_now=True)
 
 class Submission(models.Model):
     id=models.AutoField(primary_key=True)

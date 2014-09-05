@@ -1,36 +1,32 @@
-<!doctype html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load staticfiles %}
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>	Sign up</title>
+        <title>Sign in</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
         <!-- needs images, font... therefore can not be part of ui.css -->
-        <link rel="stylesheet" href="css/bower_components/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="css/bower_components/weather-icons/css/weather-icons.min.css">
+        <link rel="stylesheet" href="{% static  "css/bower_components/font-awesome/css/font-awesome.min.css" %}">
+        <link rel="stylesheet" href="{% static  "css/bower_components/weather-icons/css/weather-icons.min.css" %}">
         <!-- end needs images -->
 
-            <link rel="stylesheet" href="styles/main.css">
+            <link rel="stylesheet" href="{% static  "styles/main.css" %}">
 
     </head>
-    <div class="page-signup">
+    <div class="page-signin">
 
     <div class="signin-header">
         <div class="container text-center">
             <section class="logo">
-                <a href="#/">#include</a>
+                <a href="/login/">#include</a>
             </section>
-        </div>
-           <div class="container text-right">
-            <section class="fa fa-home">
-                <a href="#/">Home</a>
-            </section>
-        </div>
-
-    </div>
+            </div>
+            
+</div>
 
     <div class="signup-body">
         <div class="container">
@@ -47,7 +43,18 @@
                 <span class="line-thru">OR</span>
 
                 <section>
-                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="input-group input-group-lg">
+						    {% if errors %}
+						    {% for error in errors %}
+						    {{error}}
+						    {% endfor %}
+						    {% endif %}
+						    </div>
+                        </div>
+                                           
+                    <form class="form-horizontal" action="/signup/" method="post">
+                    	{% csrf_token %}
                         <div class="form-group">
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon">
@@ -56,6 +63,7 @@
                                 <input  type="text"
                                         class="form-control"
                                         placeholder="Name"
+                                        name="name"
                                         >
                             </div>
                         </div>
@@ -67,6 +75,7 @@
                                 <input type="email"
                                        class="form-control"
                                        placeholder="Email"
+                                       name="email"
                                        >
                             </div>
                         </div>
@@ -80,6 +89,7 @@
                                 <input  type="text"
                                         class="form-control"
                                         placeholder="College"
+                                        name="college"
                                         >
                             </div>
                             </div>
@@ -92,6 +102,7 @@
                                 <input  type="text"
                                         class="form-control"
                                         placeholder="Screen name"
+                                        name="username"
                                         >
                             </div>
                         </div>
@@ -104,6 +115,7 @@
                                 <input type="password"
                                        class="form-control"
                                        placeholder="Password"
+                                       name="password"
                                        >
                             </div>
                         </div>
@@ -116,7 +128,7 @@
                         <div class="form-group">
                             <p class="text-muted text-small">By clicking on Sign up, you agree to <a href="javascript:;">terms & conditions</a> and <a href="javascript:;">privacy policy</a></p>
                             <div class="divider"></div>
-                            <a href="#/" class="btn btn-primary btn-lg btn-block">Sign up </a>
+                            <input type="submit" value="Sign Up" class="btn btn-primary btn-lg btn-block">
                         </div>
  
                     </form>

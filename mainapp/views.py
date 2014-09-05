@@ -8,6 +8,7 @@ from source.submission import *
 from source.misc import *
 from source.player import *
 
+
 def index(request):
     c = {}
     errors = []
@@ -19,32 +20,57 @@ def index(request):
         if not errors:
             if authenticate_user(request):
                 print "Entered"
-                return HttpResponseRedirect('/home/')
+                return HttpResponseRedirect('/profile/')
             else:
                 if errors ==[]:
                     errors.append('Invalid Credentials')  
     c = {'errors' : errors}
     c.update(csrf(request))
-    return render_to_response("index.html",c)
+    return render_to_response("signin.html",c)
 
+@login_required(login_url='/login/')
 def contactus(request):
-    return render_to_response("contactus.html")
+    c={}
+    c["profile"] = get_player_profile(request)
+    c.update(csrf(request))
+    return render_to_response("contactus.html",c)
 
+@login_required(login_url='/login/')
+def rules(request):
+    c={}
+    c["profile"] = get_player_profile(request)
+    c.update(csrf(request))
+    return render_to_response("rules.html",c)
+
+@login_required(login_url='/login/')
+def submission(request):
+    c={}
+    c["profile"] = get_player_profile(request)
+    c['submissions'] = get_player_submissions(request)
+    c.update(csrf(request))
+    return render_to_response("submission.html",c)
+
+@login_required(login_url='/login/')
 def leaders(request):
     c = {"leaderboard" : leaderboard}
+    c["profile"] = get_player_profile(request)
     c.update(csrf(request))
     return render_to_response("leaderboard.html",c)
 
+@login_required(login_url='/login/')
 def profile(request):
     c = {}
     c["profile"] = get_player_profile(request)
     c.update(csrf(request))
     return render_to_response("profile.html",c)
 
+@login_required(login_url='/login/')
 def problem(request):
     id = request.GET.get('id')
     details = get_problem_details(id)
+    update_views(request.session['playerid'],id)
     c = {'q': details}
+    c["profile"] = get_player_profile(request)
     if request.FILES:
         submissionid = save_submission(request,id)
         if type(submissionid) == type("s"):
@@ -55,31 +81,34 @@ def problem(request):
         else:
             c['messages']='Upload failed, please try again.'
     c.update(csrf(request))
-    return render_to_response("problem.html",c)
+    return render_to_response("submit.html",c)
 
+@login_required(login_url='/login/')
 def allproblems(request):
     details = get_problems()
-    c = {'problems': details}
+    c = {'problem0':details[0],'problems': details[1]}
+    c["profile"] = get_player_profile(request)
     c.update(csrf(request))
-    print "here"
-    return render_to_response("allproblems.html",c)
+    return render_to_response("question.html",c)
 
 def login(request,msg=""):
     errors = [msg]
+    print request.POST
     if request.method == 'POST':
         if not request.POST.get('username', ''):
             errors.append('Enter username.')
         if not request.POST.get('password', ''):
             errors.append('Enter a passowrd.')
-        if not errors:
+        if errors==['']:
             if authenticate_user(request):
-                return HttpResponseRedirect('/home/')
+                request.session['playerid'] = get_player_id(request.user.id)
+                return HttpResponseRedirect('/profile/')
             else:
-                if errors ==[]:
+                if errors==['']:
                     errors.append('Invalid Credentials')  
     c = {'errors' : errors}
     c.update(csrf(request))
-    return render_to_response("index.html",c)
+    return render_to_response("signin.html",c)
 
 @login_required(login_url='/login/')
 def home(request):
@@ -87,10 +116,11 @@ def home(request):
     print "hello", request.user.is_authenticated()
     files=get_player_submissions(request)
     c['submissions']=files
-    c['user']=request.user.username
+    c["profile"] = get_player_profile(request)
     c['problems'] = get_problems()
     c.update(csrf(request))
-    return render_to_response("home.html",c,context_instance=RequestContext(request))
+    return render_to_response("profile.html",c,context_instance=RequestContext(request))
+
 
 def logout(request):
     logout_player(request)
@@ -98,6 +128,7 @@ def logout(request):
 
 def signup(request):
     errors = []
+    print request.POST
     if request.method == 'POST':
         if not request.POST.get('username', ''):
             errors.append('Enter username.')
@@ -117,8 +148,9 @@ def signup(request):
     c = {'errors' : errors}
     c.update(csrf(request))
 
-    return render_to_response("signup.html",c,context_instance=RequestContext(request))
+    return render_to_response("Signup.html",c,context_instance=RequestContext(request))
 
+@login_required(login_url='/login/')
 def createquestion(request):
     errors = []
     if request.method == 'POST':
@@ -139,4 +171,3 @@ def createquestion(request):
     c.update(csrf(request))
 
     return render_to_response("create-question.html",c,context_instance=RequestContext(request))
-    

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="view-container">
+
+    <!--
+
+     ngView:  
+
+    -->
+    <section id="content" class="animate-fade-up ng-scope" data-ng-view="">
+        <div class="page page-dashboard ng-scope" data-ng-controller="DashboardCtrl">
+        <div class="row">
+        <div class="col-md-12">
+    
+
+                <h1> Submissions</h1>
+                 
+
+               
+
+                     <button class="btn btn-w-md btn-gap-v btn-line-default  pull-right" type="button">
+
+        Sort by Date
+
+                         </button>
+           <button class="btn btn-w-md btn-gap-v btn-line-default  pull-right" type="button">
+
+        Sort by Challenge
+
+              </button>
+             
+</div>
+              
+
+            <table class="responsive table table-striped">
+                <thead>
+                    <tr>
+                        <th>Problem</th>
+                        <th>Time</th>
+                        <th>Result</th>
+                        <th>score</th>
+                        
+                    </tr>
+                </thead>
+ 
+
+                      <tbody>
+                      	{% for submission in submissions %}
+                    <tr>
+                        <th><div class="questionheading">{{submission.problemname}}</div></th>
+                       <td>{{submission.timestamp}}</td>
+                        <td><div class={% if submission.status == "Success" %}"questionheading"{% else %}"rejected"{% endif %}>{{submission.status}}<i class=
+                        	{% if submission.status == "Success" %}"fa fa-check"{% else %}"fa fa-times"{% endif %}></i></div></td>
+                        <td>{{submission.score}}</td>
+                       <!-- <td><button class="btn btn-w-md btn-gap-v btn-line-default  pull-right " type="button">View Program </button></td>
+                       -->
+                    </tr>
+                    	{% endfor %}
+                      </tbody>
+{% endblock %}
