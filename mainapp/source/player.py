@@ -57,8 +57,9 @@ def get_player_profile(request):
         denominator = 1
     else:
         denominator = p.totalsubmissions
+    print p.totalsubmissions,p.totalsolutions
     profile = {"name" : request.user.username, "email" : p.email, "totalscore":p.totalscore, "successrate":(float(p.totalsolutions)/denominator)*100,
-               "totalsubmissions" : p.totalsubmissions, "wrongsolutions":p.totalsolutions-p.totalsolutions, "totalsolutions":p.totalsolutions,
+               "totalsubmissions" : p.totalsubmissions, "wrongsolutions":p.totalsubmissions-p.totalsolutions, "totalsolutions":p.totalsolutions,
                "problemsviewed" : p.problems_viewed.count()
                }
     
