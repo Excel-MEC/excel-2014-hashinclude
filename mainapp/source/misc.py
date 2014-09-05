@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
-from mainapp.models import Problem,Player
+from mainapp.models import Problem,Player,PlayerProblemViewTime
 from judge.source.judge import clean
 
 import os
@@ -86,8 +86,8 @@ def get_problem_details(id):
 
 def leaderboard():
     leaderboard = []
-    players = Player.objects.order_by('totalscore').reverse()
+    players = Player.objects.all()
     for player in players:
-        data = {"name" : player.userid.username, "score" : player.totalscore,'college':player.college}
+        data = {"name" : player.userid.username, "score" : player.totalscore,'lastsolution':player.lastsolutiontime}
         leaderboard.append(data)
     return leaderboard

@@ -21,6 +21,10 @@ class Player(models.Model):
     totalsolutions = models.IntegerField(default=0)
     totalsubmissions = models.IntegerField(default=0)
     problems_viewed = models.ManyToManyField(Problem,blank=True,null=True)
+    lastsolutiontime = models.DateTimeField(blank=True,null=True)
+    
+    class Meta:
+        ordering = ["-totalscore","lastsolutiontime"]
 
 class PlayerProblemViewTime(models.Model):
     playerid = models.ForeignKey(Player)
@@ -34,6 +38,6 @@ class Submission(models.Model):
     status = models.CharField(max_length=50,default='Processing')
     score = models.FloatField(default=0)
     language = models.CharField(max_length=50)
-    timetaken = models.IntegerField(default=-1)
+    timetaken = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now=True)
     safe = models.BooleanField(default=True)

@@ -2,6 +2,7 @@ import os, re, sys, threading, time, urllib
 from mainapp.models import Submission, Problem, Player
 import filecmp
 from multiprocessing import Process
+from datetime import datetime
 
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
@@ -193,7 +194,8 @@ def solution_verification(submissionid, problemid,foldername,userid):
         pl.totalsubmissions = pl.totalsubmissions + 1
         pl.totalsolutions = pl.totalsolutions + 1
         pr = Problem.objects.get(id=problemid)
-        pl.totalscore = pl.totalscore+pr.score 
+        pl.totalscore = pl.totalscore+pr.score
+        pl.lastsolutiontime = datetime.now() 
         pl.save()
         S.score = pr.score
         S.status = "Success"

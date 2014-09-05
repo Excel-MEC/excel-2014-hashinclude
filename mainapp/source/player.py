@@ -13,7 +13,7 @@ def register_player(data):
         user.save()
     except:
         return False
-    try:
+    if True:
         p = Player(userid=user,name=data['name'],email=data['email'],college=data['college'])
         p.save()
         newpath = DIR + '/' + str(user.username)+ '_'+ str(user.id)
@@ -21,7 +21,7 @@ def register_player(data):
         print "Success"
         
         return True
-    except:
+    else:
         try:
             p.delete()
             user.delete()
