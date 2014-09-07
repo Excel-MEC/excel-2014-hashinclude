@@ -73,6 +73,7 @@ def problem(request):
     c["profile"] = get_player_profile(request)
     if request.FILES:
         submissionid = save_submission(request,id)
+        print submissionid
         if type(submissionid) == type("s"):
             c['messages']=submissionid
         elif submissionid>0:

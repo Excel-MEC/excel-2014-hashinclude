@@ -1,6 +1,6 @@
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from judge.source.judge import compilation_engine,execution_engine,kill,killThread,execThread,cleaner
+from judge.source.judge import compilation_engine,killThread,cleaner
 from mainapp.models import Player,Submission
 import re
 import sys
@@ -36,7 +36,7 @@ def save_submission(request,problemid):
     if file is None:
         return False
     if file_verify(file) is False:
-        return False
+        return "Unsupported Filetype"
     foldername = str(request.user.username)+'_'+str(request.user.id)+'/'        
     try:
         with open(str(BASE_PATH)+'/media/'+foldername+str(file), 'wb+') as destination:
