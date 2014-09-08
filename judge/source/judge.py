@@ -58,6 +58,7 @@ class SandboxExec (object):
             print 'Thread started'
             env = dict(os.environ)
             env['LD_PRELOAD'] = BASE_PATH+'/EasySandbox/EasySandbox.so'
+            print env['LD_PRELOAD']
             self.process = subprocess.Popen(self.cmd, stdin=self.input, stdout=self.output, stderr=self.error, env=env)
             self.process.communicate()
             print 'Thread finished'
@@ -68,9 +69,12 @@ class SandboxExec (object):
         thread.join(timeout)
         endtime = time.time()
         c = Submission.objects.get(id=submissionid)
-        c.status = "Failed Testcases"
+        if self.process.returncode==-9:
+            c.status = "Unsafe Code"
+
         if thread.is_alive():
-            c.status = "Timeout"
+            if self.process.returncode!=-9:
+                c.status = "Timeout"
             print 'Terminating process'
             self.process.terminate()
             endtime = time.time()
@@ -95,7 +99,7 @@ def cleaner(code_name, lang, submissionid):
             filename = code_name+".cpp"
         #filter out dangerous functions and headers
         dangers = []
-        #dangers = ['system(','fork(','<CON','execl(','execlp(','wait(','<signal.h>','<fcntl.h>','socket.h','unistd.h','<csignal>','<thread>','pthread.h','syscall','CreateProcess','ShellExecute','sys/','netinet/in.h','netdb.h','kill(']
+        dangers = ['system(','fork(','<CON','execl(','execlp(','wait(','<signal.h>','<fcntl.h>','socket.h','unistd.h','<csignal>','<thread>','pthread.h','syscall','CreateProcess','ShellExecute','sys/','netinet/in.h','netdb.h','kill(']
         lines = [line.strip() for line in open(filename)]
         cleaned = 0
         #remove all white spaces from each line and then filter out the danger
@@ -169,7 +173,8 @@ def kill(code_name,lang,submissionid,problemid,foldername,userid):
     p.run(timeout=timelimit,submissionid=submissionid)
     time.sleep(timelimit+0.5)
     c = Submission.objects.get(id=submissionid)
-    if c.status == "Timeout":
+    os.system("rm "+code_name)
+    if c.status == "Timeout" or c.status == "Unsafe Code":
         return
     thread3 = solution_verificationThread(3, "Thread-SolVerification", 3,str(submissionid), str(problemid),str(foldername),userid)
     thread3.start()
@@ -192,33 +197,8 @@ def clean(file):
 def solution_verification(submissionid, problemid,foldername,userid):
     solutionpath = str(BASE_PATH)+"/mainapp/media/question_"+problemid+"/output.txt"
     playeroutputpath = str(BASE_PATH)+"/mainapp/media"+foldername+"/output-"+submissionid+".txt"
-    playererrorpath = str(BASE_PATH)+"/mainapp/media"+foldername+"/error-"+submissionid+".txt"
-    with open(playererrorpath, 'r') as f:
-        lines = f.read().splitlines(True)
-    print os.path.getsize(playeroutputpath)
-    if os.path.getsize(playeroutputpath)>250000:
-        c = Submission.objects.get(id=submissionid)
-        if len(lines)>1:
-            c.status = "Unsafe Code"
-        else:
-            c.status = "Timeout"
-        c.save()
-        pl = Player.objects.get(userid_id=userid)
-        pl.totalsubmissions = pl.totalsubmissions + 1
-        pl.save()
-        return
-        
-    if len(lines)>1:
-        c = Submission.objects.get(id=submissionid)
-        c.status = "Unsafe Code"
-        c.safe = False
-        c.save()
-        pl = Player.objects.get(userid_id=userid)
-        pl.totalsubmissions = pl.totalsubmissions + 1
-        pl.save()
-        return
-        
     S = Submission.objects.get(id=submissionid)
+    
     with open(playeroutputpath, 'r') as fin:
         data = fin.read().splitlines(True)
     with open(playeroutputpath, 'w') as fout:
