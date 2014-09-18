@@ -7,8 +7,7 @@ import os
 
 BASE_PATH = os.path.dirname(os.path.dirname(__file__))
 
-def authenticate_user(request):
-    data = request.POST
+def authenticate_user(data,request):
     if not User.objects.all():
         user = User.objects.create_user('john', 'lennon@thebeatles.com', 'john')
     user = authenticate(username=data['username'], password=data['password'])
