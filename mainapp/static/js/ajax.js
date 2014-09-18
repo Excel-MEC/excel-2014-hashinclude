@@ -47,8 +47,8 @@ $.ajaxSetup({
     }
 });
 
-data = {'name':response['name'],'id':response['id'],
-            'csrfmiddlewaretoken':getCookie('csrftoken')};
+data = {'name':response['name'],'id':response['id'],'username':$('#').val(),
+		'password':$('#').val(),'csrfmiddlewaretoken':getCookie('csrftoken')};
 
 $.ajax({
     url: '/fblogin',
