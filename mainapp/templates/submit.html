@@ -137,20 +137,17 @@
 <div>
 <form method="post" action="/fullscreen?id={{q.id}}">
 	{% csrf_token %}
-{% if not code %}
-<textarea id="c-code" name='c-code' onchange="updatebody();">
-/* C demo code */
+
+<textarea id="c-code" name='c-code' onkeyup="updatebody(this)">
+{% if not code %}/* C demo code */
 #include <stdio.h>
 int main(){
 	printf("hello world!");
   return 0;
-}
-</textarea></div>
-{% else %}
-<textarea id="c-code" name='c-code' onchange="updatebody();">
-{{code}}
-</textarea></div>
-{% endif %}
+}{% else %}{{code}}
+
+
+{% endif %}</textarea></div>
 <center>
 <input type="file" onchange="onFileSelected(event)">
 <br>

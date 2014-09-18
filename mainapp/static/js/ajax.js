@@ -31,8 +31,7 @@ $(document).ready(function() {
 function updatebody()
 {
 	console.log('body called');
-	text=$('#c-code').val();
-	$('#c-code').val(text);
+	$('#mydiv').text($(obj).attr('value'));
 }
 
 function login(response)
@@ -70,39 +69,3 @@ $.ajax({
 
 }
 
-function uploadpgm (){
-	
-var csrftoken = getCookie('csrftoken');
-
-
-
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        
-    }
-});
-
-data={'code':$('#c-code').val(),'qid':$('#qid').val(),'upload':'True'};
-console.log(data);
-$.ajax({
-    url: '/upload',
-    type: 'post', 
-	data:data,
-    success: function(data) {
-		
-		console.log('success');
-		str='';
-		str+=data['messages']+'\n';
-		str+=data['message_compilation']+'\n';
-		alert(str);
-	
-	
-	
-    },
-    failure: function(data) { 
-        alert('Got an error');
-    }
-}); 
-	
-}

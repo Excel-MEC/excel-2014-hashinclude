@@ -76,3 +76,40 @@
     else
       cEditor.setOption("mode", 'text/x-csrc');
    }
+
+function uploadpgm () {
+	
+var csrftoken = getCookie('csrftoken');
+
+
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        
+    }
+});
+
+data={'code':cEditor.getValue(),'qid':$('#qid').val(),'upload':'True'};
+console.log(data);
+$.ajax({
+    url: '/upload',
+    type: 'post', 
+	data:data,
+    success: function(data) {
+		
+		console.log('success');
+		str='';
+		str+=data['messages']+'\n';
+		str+=data['message_compilation']+'\n';
+		alert(str);
+	
+	
+	
+    },
+    failure: function(data) { 
+        alert('Got an error');
+    }
+}); 
+	
+}
