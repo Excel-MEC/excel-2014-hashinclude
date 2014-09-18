@@ -1,4 +1,50 @@
-@import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+.btn-block {
+    white-space: normal;
+}
+.btn-lg, .btn-group-lg > .btn {
+    padding: 10px 19px;
+    font-size: 17px;
+    line-height: 1.471;
+    border-radius: 6px;
+}
+.btn-info {
+    color: #FFF;
+    background-color: #3498DB;
+}
+
+
+.btn-info:hover, .btn-info.hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open > .dropdown-toggle.btn-info {
+    color: #FFF;
+    background-color: #5DADE2;
+    border-color: #5DADE2;
+}
+
+.btn-danger {
+    color: #FFF;
+    background-color: #E74C3C;
+}
+
+
+
+video#bgvid { 
+
+position: fixed; right: 0; bottom: 0;
+
+min-width: 100%; min-height: 100%;
+
+width: auto; height: auto; z-index: -100;
+
+background: url(polina.jpg) no-repeat;
+
+background-size: cover; 
+
+}
+
+
+@font-face {
+    font-family: Helventica;
+    src: url(fonts/hnt/fontmain.otf);
+}
 
 html,body
 {
@@ -6,11 +52,25 @@ html,body
 	margin:0px;
 	width:100%;
 	height:100%;
-	font-family: 'Droid Sans', sans-serif;
+	font-family: 'Helventica', sans-serif;
+
 
 }
 
+.pagepadding
+{
+	padding-left:0px;
+	padding-right: 20px;
+}
+.questionformat
+{
+	font-size: 20px;
+}
 
+.menuspacing
+{
+	color: #2EC866;
+}
 .contain{
 	background: #000;
 	padding-left:20px;
@@ -121,12 +181,38 @@ font-family: "Lato",Calibri,Arial,sans-serif;
 font-weight: 400;
 font-size: 100%;
 color: #000;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 30em;
+ animation: type 4s steps(60, end); 
 }
+.rulesheading:nth-child(2){
+  animation: type2 8s steps(60, end);
+}
+check{
+  animation: blink 1s infinite;
+}
+
+@keyframes type{ 
+  from { width: 0; } 
+} 
+
+@keyframes type2{
+  0%{width: 0;}
+  50%{width: 0;}
+  100%{ width: 100; } 
+} 
+
+@keyframes blink{
+  to{opacity: .0;}
+}
+
+
 .contentrules
 {
 	font-size: 1.2em;
 line-height: 1.6;
-font-weight: 300;
+font-weight: 500;
 padding: 5px 8%;
 text-align: justify;
 color:#000;
@@ -377,16 +463,14 @@ box-shadow: -3px 36px 33px 7px rgba(0,0,0,0.75) ;
 }
 
 .ch-img-1 { 
-	background-image: url(../img/profile.jpg);
+	background-image: url(../img/athul.jpg);
 }
 
 .ch-img-2 { 
-	background-image: url(../img/profile.jpg);
+	background-image: url(../img/eas.jpg);
 }
 
-.ch-img-3 { 
-	background-image: url(../img/profile.jpg);
-}
+
 
 
 

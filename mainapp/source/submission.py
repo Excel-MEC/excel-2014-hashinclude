@@ -18,46 +18,45 @@ ext_to_lang_dict = {
 
 def file_verify(file):
     ONE_MB = 1.049e+6
-    if file.size>ONE_MB:
+    if len(file)>ONE_MB:
         return False
-    pattern = re.compile('[a-zA-Z0-9]+\.[c|cpp|CPP|c++|cp|cxx|C]')
-    match = pattern.match(file.name)
-    if match:
-        return True
     else:
-        return False
-
+        return True
+    
 def save_submission(request,problemid):
-    file = request.FILES.get('file')
+    file = str(request.POST.get('code'))
     if Submission.objects.filter(problemid_id=problemid).filter(status="Success").filter(playerid__userid=request.user).exists():
         return "Already solved, submission not accepted."
+    print "here"
     
-    filename = str(file)
-    if file is None:
+    if file is None or file=='':
         return False
     if file_verify(file) is False:
-        return "Unsupported Filetype"
+        return "File too large"
     foldername = str(request.user.username)+'_'+str(request.user.id)+'/'        
-    try:
-        with open(str(BASE_PATH)+'/media/'+foldername+str(file), 'wb+') as destination:
-            for chunk in file.chunks():
-                destination.write(chunk)
+    if True:
         player = Player.objects.get(userid=request.user)
-        s =Submission(playerid=player,problemid_id=problemid,language=ext_to_lang_dict[filename[filename.find('.')+1:]])
+        s =Submission(playerid=player,problemid_id=problemid,language=ext_to_lang_dict['c'])
+        print "saved"
         s.save()
+        with open(str(BASE_PATH)+'/media/'+foldername+'s'+str(s.id)+'.c', 'wb+') as fin:
+            fin.write(file)
+        player = Player.objects.get(userid=request.user)
         return s.id
-    except:
+    else:
         return 0
 
 def compile_submission(request,submissionid,problemid):
-    filename = str(request.FILES.get('file'))
-    extension = filename[filename.find('.')+1:]
-    filename = filename[:filename.find('.')]
+    filename = 's'+submissionid+'.c'
+    extension = 'c'
+    filename = 's'+submissionid
     foldername = '/'+str(request.user.username)+'_'+str(request.user.id)
     file = str(BASE_PATH)+'/media'+foldername+'/'+filename
     lang = ext_to_lang_dict[extension]
+    print file
     cleaner(file, lang, submissionid)
     S = Submission.objects.get(id=submissionid)
+    print "hereman"
     if compilation_engine(file,lang,submissionid,problemid,foldername)==1 and S.safe==True:
         thread1 = killThread(1, "Thread-kill", 1,str(file),str(lang),submissionid,problemid,str(foldername),request.user.id)
         thread1.start()
@@ -65,6 +64,7 @@ def compile_submission(request,submissionid,problemid):
     elif S.safe==False:
         S.status = "Unsafe Code, could not execute."
         S.save()
+        return "Error, did not execute"
     else:
         S.status = "Compilation Error"
         S.save()

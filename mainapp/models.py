@@ -16,6 +16,7 @@ class Player(models.Model):
     userid = models.ForeignKey(User)
     name = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
+    fbuserid = models.CharField(max_length=50,default='N/A')
     college = models.CharField(max_length=50)
     totalscore = models.FloatField(default=0)
     totalsolutions = models.IntegerField(default=0)

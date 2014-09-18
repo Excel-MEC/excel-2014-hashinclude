@@ -8,3 +8,7 @@ $(document).ready(function() {
 		$("#app").addClass("nav-min");
 	});
 });
+ $(window).load(function() {
+            $("#loadingpage").css("display","none");
+      });
+

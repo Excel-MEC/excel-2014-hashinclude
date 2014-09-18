@@ -36,6 +36,7 @@
         <!-- needs images, font... therefore can not be part of ui.css -->
          
          
+         <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
         <!-- end needs images -->
 
 
@@ -55,6 +56,23 @@
  
 
 <body>
+         
+
+
+ 
+
+
+<div id="loadingpage" style="display:visible; position:absolute; left:0%; top:0%; z-index:100; background-color:white;  height:100%; width:100%;">
+    <img src="{% static "img/loader.gif" %}" style="position:relative;display:block;  top:35%; margin-left:auto; margin-right:auto;">
+  </div> 
+
+<video autoplay loop poster="" id="bgvid">
+
+<source src="{% static "video/include.webm" %}" type="video/webm">
+
+
+
+</video>   
 <div class="row">
 <div data-ng-app="app" id="app" data-custom-background="" data-off-canvas-nav="">
         <!--[if lt IE 9]>
@@ -143,7 +161,7 @@
                             </a>
                         </li>-->
                         <li>
-                            <a href="/signin">
+                            <a href="/logout">
                                 <i class="fa fa-sign-out"></i>
                                 <span data-i18n="Log Out">
 
@@ -224,7 +242,14 @@
 <link rel="stylesheet" href="{% static  "css/bower_components/font-awesome/css/font-awesome.min.css" %}">
 <link rel="stylesheet" href="{% static "css/bower_components/weather-icons/css/weather-icons.min.css"%}">
 <link rel="stylesheet" href="{% static "styles/main.css" %}">
-
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-54537876-4', 'auto');
+  ga('send', 'pageview');
+</script>
 </body>
 </html>
 

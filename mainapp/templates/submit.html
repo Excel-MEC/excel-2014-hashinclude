@@ -1,6 +1,32 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block content %}
+         
+     
+        
+        
+    
+<link rel="stylesheet" href="{% static "lib/codemirror.css" %}">
+<link rel="stylesheet" href="{% static "addon/display/fullscreen.css" %}">
+<link rel="stylesheet" href="{% static "addon/fold/foldgutter.css" %}">
+<link rel="stylesheet" href="{% static "addon/dialog/dialog.css" %}">
+<link rel="stylesheet" href="{% static "theme/ambiance.css" %}">
+<link rel="stylesheet" href="{% static "theme/blackboard.css" %}">
+<link rel="stylesheet" href="{% static "theme/cobalt.css" %}">
+<link rel="stylesheet" href="{% static "theme/lesser-dark.css" %}">
+<link rel="stylesheet" href="{% static "theme/mbo.css" %}">
+<link rel="stylesheet" href="{% static "theme/mdn-like.css" %}">
+<link rel="stylesheet" href="{% static "theme/midnight.css" %}">
+<link rel="stylesheet" href="{% static "theme/monokai.css" %}">
+<link rel="stylesheet" href="{% static "theme/neat.css" %}">
+<link rel="stylesheet" href="{% static "theme/neo.css" %}">
+<link rel="stylesheet" href="{% static "theme/night.css" %}">
+<link rel="stylesheet" href="{% static "theme/paraiso-dark.css" %}">
+<link rel="stylesheet" href="{% static "theme/pastel-on-dark.css" %}">
+<link rel="stylesheet" href="{% static "theme/solarized.css" %}">
+          
+          
+
 <div class="view-container">
 
     <!--
@@ -22,7 +48,7 @@
                 
                 <ul class="nav-tabs nav" style="padding-bottom: 1px;">
                     <li id="problemTab" class="active">
-                        <a class="hr-problem-link" href="/challenges/solve-me-first">
+                        <a class="hr-problem-link" href="/submit?id={{q.id}}">
 
                             Problem
 
@@ -34,14 +60,14 @@
                             Submissions
 
                         </a>
-                    </li>
-                    <li id="leaderboardTab">
-                        <a class="hr-leaderboard-link" href="/challenges/solve-me-first/leaderboard">
+                    </li> -->
+                    <li id="submissionsTab" class="">
+                        <a class="hr-leaderboard-link" href="/discussion?id={{q.id}}">
 
-                            Leaderboard
+                            Discussion Board
 
                         </a>
-                    </li> -->
+                    </li>
                     
                 </ul>
             </header>
@@ -61,7 +87,7 @@
                           	  {{messages}}
 							  {{message_compilation}}
 							  
-                              {{q.desc}}
+                              {{q.desc|linebreaksbr}}
                               <br /><br />
                               
                               <!-- <strong>Example<br /></strong> -->
@@ -82,17 +108,98 @@
                         
                          <div class="wordspacing"> Participants:{{q.participants}}  Maxscore:{{q.score}}  Difficulty:{{q.difficulty}} Timelimit:{{q.timelimit}}</div> 
                      
- 	<br />                         
-<form enctype="multipart/form-data" class="form-horizontal" action="/submit?id={{q.id}}" method="post">
+ 	<br />           
+ 	
+ 	<div class="row">
+<div class ="col-md-12">
+
+<br>
+<p><center>Select a theme: <select onchange="selectTheme()" id="selectt">
+    <option>default</option>
+    <option>solarized dark</option>
+    <option>solarized light</option>
+    <option selected>monokai</option>
+    <option>ambiance</option>
+    <option>blackboard</option>
+    <option>cobalt</option>
+    <option>lesser-dark</option>
+    <option>mbo</option>
+    <option>mdn-like</option>
+    <option>midnight</option>
+    <option>neat</option>
+    <option>neo</option>
+    <option>night</option>
+    <option>paraiso-dark</option>
+    <option>pastel-on-dark</option>
+</select>
+</p></center>
+	
+<div>
+<form method="post" action="/fullscreen?id={{q.id}}">
 	{% csrf_token %}
-    <input id="uploadBtn" class="upload" type="file" name="file"></input>
+{% if not code %}
+<textarea id="c-code" name='c-code' onchange="updatebody();">
+/* C demo code */
+#include <stdio.h>
+int main(){
+	printf("hello world!");
+  return 0;
+}
+</textarea></div>
+{% else %}
+<textarea id="c-code" name='c-code' onchange="updatebody();">
+{{code}}
+</textarea></div>
+{% endif %}
+<center>
+<input type="file" onchange="onFileSelected(event)">
+<br>
+</center>
+<div >
+<input type="hidden" id="qid" value="{{q.id}}">
+<input type="submit" class="btn btn-success btn-lg pull-left" value="Go Fullscreen">
+</form>
 
- <div class="panel-body text-center">
- 
-  <input type="submit" value="Submit My Code" class="btn btn-w-md btn-gap-v btn-info pull-right" name="upload">
+<span style="padding-right:10%">
+<button onclick="uploadpgm()" href='#'  class="btn btn-success btn-lg pull-right" >
+Submit the Code</button>
+</span>
 
-    </div>
- </form>
+<span style="padding-left:15%">
+<button class="btn btn-success btn-lg " onclick="downloadCode()">Download my code </button>
+</span>
+
+</div>
+<script src="{% static "js/ajax.js" %}"></script>
+<script src="{% static "lib/codemirror.js" %}"></script>
+<script src="{% static "addon/search/searchcursor.js" %}"></script>
+<script src="{% static "addon/search/search.js" %}"></script>
+<script src="{% static "addon/dialog/dialog.js" %}"></script>
+<script src="{% static "addon/edit/matchbrackets.js" %}"></script>
+<script src="{% static "addon/edit/closebrackets.js" %}"></script>
+<script src="{% static "addon/comment/comment.js" %}"></script>
+<script src="{% static "addon/wrap/hardwrap.js" %}"></script>
+<script src="{% static "addon/fold/foldcode.js" %}"></script>
+<script src="{% static "addon/fold/brace-fold.js" %}"></script>
+<script src="{% static "addon/display/fullscreen.js" %}"></script>
+<script type="text/javascript" src="{% static "mode/clike/clike.js" %}"></script>
+<script type="text/javascript" src="{% static "mode/python/python.js" %}"></script>
+<script type="text/javascript" src="{% static "mode/javascript/javascript.js" %}"></script>
+<script type="text/javascript" src="{% static "mode/go/go.js" %}"></script>
+<script src="{% static "keymap/sublime.js" %}"></script>
+<script type="text/javascript" src="{% static "js/editor.js" %}"></script>
+
+
+        <script src="{% static "scripts/ui.js" %}"></script>
+
+
+
+        <script src="{% static "scripts/app.js" %}"></script>
+        
+<script src="{% static "js/bootstrap.min.js"></script>
+
+
+</div>              
                                
 
 
@@ -105,14 +212,6 @@
  </div>
 
    
- <script type="text/javascript">
-
-        // <![CDATA[
-        document.getElementById("uploadBtn").onchange = function () {
-    document.getElementById("uploadFile").value = this.value;
-};
-
-    </script>
 
 
 
