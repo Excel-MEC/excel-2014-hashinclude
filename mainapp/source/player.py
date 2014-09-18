@@ -14,7 +14,7 @@ def register_player(data):
     except:
         return False
     if True:
-        p = Player(userid=user,name=data['name'],email=data['email'],college=data['college'])
+        p = Player(userid=user,name=data['name'],email=data['email'],college=data['college'],fbuserid=data.get('id','N/A'))
         p.save()
         newpath = DIR + '/' + str(user.username)+ '_'+ str(user.id)
         if not os.path.exists(newpath): os.makedirs(newpath)

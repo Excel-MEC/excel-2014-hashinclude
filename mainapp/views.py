@@ -9,7 +9,7 @@ import os
 from source.submission import *
 from source.misc import *
 from source.player import *
-
+import logging
 
 def index(request):
     c = {}
@@ -20,7 +20,7 @@ def index(request):
         if not request.POST.get('password', ''):
             errors.append('Enter a passowrd.')
         if not errors:
-            if authenticate_user(request):
+            if authenticate_user(request.POST,request):
                 print "Entered"
                 request.session['playerid'] = get_player_id(request.user.id)
                 return HttpResponseRedirect('/profile/')
@@ -112,7 +112,7 @@ def login(request,msg=""):
         if not request.POST.get('password', ''):
             errors.append('Enter a passowrd.')
         if errors==['']:
-            if authenticate_user(request):
+            if authenticate_user(request.POST,request):
                 request.session['playerid'] = get_player_id(request.user.id)
                 return HttpResponseRedirect('/profile/')
             else:
@@ -168,9 +168,13 @@ def discussionboard(request):
 
 
 def logout(request):
-    logout_player(request)
-    del request.session['playerid']
-    return HttpResponseRedirect('/index/')
+    p = Player.objects.get(userid=request.user)
+    if len(p.fbuserid) > 4:
+        logout_player(request)
+        return HttpResponse('fbuser')
+    else:
+        logout_player(request)
+        return HttpResponseRedirect('/signin')
 
 def signup(request):
     errors = []
@@ -227,29 +231,38 @@ def fblogin(request):
     logging.info(request)
     name=str(request.POST['name'])
     id=str(request.POST['id'])
-    data['username']=request.POST['username']
+    data['username']=request.POST['name']
     data['password']=request.POST['id']
     data['name']=name
     data['college']='N/A'
     data['id']=id
     data['email']='N/A'
-    p = Player.objects.filter(fbuserid=data['id'])
+    logging.info(data['id']);
+    try:
+	p = Player.objects.filter(fbuserid=data['id'])
+    except:
+	p =[]
 
     if len(p)<1:
+	logging.info("Registration")
         k=register_player(data)
+	logging.info("Registration done")
     else:
         p = Player.objects.get(fbuserid=data['id'])
         request.user=p.userid
         authenticate_user(data,request)
         request.session['playerid'] = get_player_id(request.user.id)
-                
         return HttpResponse('success')
     if k=="Duplicate username":
+	logging.info('Dup')
         return HttpResponse(k)
     elif k==True:
+	logging.info('true')
         p = Player.objects.get(fbuserid=data['id'])
+
         request.user=p.userid
+	logging.info(p)
         authenticate_user(data,request)
+	logging.info('authenticated')
         request.session['playerid'] = get_player_id(request.user.id)
-                
         return HttpResponse('success')
