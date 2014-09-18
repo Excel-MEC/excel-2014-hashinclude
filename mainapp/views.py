@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import json
+import os
 from source.submission import *
 from source.misc import *
 from source.player import *
@@ -74,6 +75,8 @@ def problem(request):
                 
     update_views(request.session['playerid'],id)
     c = {'q': details}
+    if os.path.isfile("img/question/img"+str(id)+'.jpg'):
+        c['image']="img/question/img"+str(id)+'.jpg'
     c["profile"] = get_player_profile(request)
     print 'yeahhere'
     c['code']=request.POST.get('c-code','')

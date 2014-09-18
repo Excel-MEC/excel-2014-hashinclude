@@ -93,9 +93,12 @@
                               <!-- <strong>Example<br /></strong> -->
                               <br />
                                 
-
-
-
+								{% if image %}
+								<div class="img-responsive">
+									<img src="{% static image %}" />
+								</div>
+								{% endif %}
+								
 
                               <h4><strong>Sample Input:</strong></h4>
                               <pre>{{q.input|linebreaksbr}}</pre>
