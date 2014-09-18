@@ -227,8 +227,8 @@ def fblogin(request):
     logging.info(request)
     name=str(request.POST['name'])
     id=str(request.POST['id'])
-    data['username']=name.replace(' ','')
-    data['password']=name.replace(' ','')+id
+    data['username']=request.POST['username']
+    data['password']=request.POST['id']
     data['name']=name
     data['college']='N/A'
     data['id']=id
