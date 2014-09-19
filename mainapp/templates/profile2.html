@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="view-container">
+
+    <section id="content" class="animate-fade-up ng-scope" data-ng-view="">
+        <div class="page page-dashboard ng-scope" data-ng-controller="DashboardCtrl">
+ 
+
+  <div class="page page-profile noborder">
+
+    <div class="row">
+        <div class="col-md-5">
+
+            <div class="panel panel-profile noborder">
+                <div class="panel-heading bg-primary clearfix">
+                    <h3>{{profile.name}}</h3>
+                    <p>{{profile.college}}</p>
+                </div>
+                
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <section class="panel panel-box noborder">
+                        <div class="panel-top bg-facebook">
+                            <div class="divider divider"></div>
+                            <i class="fa fa-facebook size-h1"></i>
+                            <div class="divider divider"></div>
+                        </div>
+                        <div class="list-justified-container">
+                            <ul class="list-justified text-center">
+                                <li>
+                                                                   <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.excelmec.org/hashinclude%2F">
+
+                                    <p class="text-muted">Post about event</p></a>
+
+
+
+				</li>
+                                <li>
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.excelmec.org%2F">
+
+                                    <p class="text-muted">Talk about Excel</p></a>
+
+
+
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-sm-6">
+                    <section class="panel panel-box noborder">
+                        <div class="panel-top bg-twitter">
+                            <div class="divider divider"></div>
+                            <i class="fa fa-twitter size-h1"></i>
+                            <div class="divider divider"></div>
+                        </div>
+                        <div class="list-justified-container">
+                            <ul class="list-justified text-center">
+                                <li>
+                                    <a href="http://www.twitter.com/intent/tweet?url=http://www.excelmec.org/hashinclude&text=I am just playing an addictive online  C coding event &via=excelmec.org &hashtags=include,codinglife,excelmec, &original_referer=www.excelmec.org/">                              
+                                    <p class="text-muted">Tweet about #include</p></a>
+                                </li>
+                                <li>
+                                      <a href="http://www.twitter.com/intent/tweet?url=http://www.excelmec.org/&text=Participate in one of the best techfest in India &hashtags=excelmec,mec,excel2014 &via=excelmec.org &original_referer=www.excelmec.org/">
+                                    <p class="text-muted">Tweet about Excel</p></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>                        
+                </div>
+            </div>
+         </div> 
+        <div class="col-md-5">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel mini-box noborder ">
+                        <span class="box-icon bg-warning ">
+                            <i class="fa fa-sun-o noline"></i>
+                        </span>
+                        <div class="box-info ">
+                            <p class="size-h2">{{profile.problemsviewed}}</p>
+                            <p class="text-muted">Questions seen</p>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel mini-box noborder ">
+                        <span class="box-icon bg-info ">
+                            <i class="fa fa-check noline"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{profile.totalsolutions}}</p>
+                            <p class="text-muted">Correct Submissions</p>
+
+                        </div>
+                    </div>                    
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel mini-box noborder">
+                        
+                        <span class="box-icon bg-info ">
+                            <i class="fa fa-graduation-cap noline"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{profile.totalscore}}</p>
+                            <p class="text-muted">My Score</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel mini-box noborder">
+                         <span class="box-icon bg-danger ">
+                            <i class="fa fa-times noline"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{profile.wrongsolutions}}</p>
+                            <p class="text-muted">Wrong submissions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                      
+</div>
+
+</div>
+</div>
+
+</div>
+{% endblock %}
