@@ -30,21 +30,21 @@ def index(request):
     c = {'errors' : errors}
     c.update(csrf(request))
     return render_to_response("signin.html",c)
-
+@csrf_exempt
 @login_required(login_url='/login/')
 def contactus(request):
     c={}
     c["profile"] = get_player_profile(request)
     c.update(csrf(request))
     return render_to_response("contactus.html",c)
-
+@csrf_exempt
 @login_required(login_url='/login/')
 def rules(request):
     c={}
     c["profile"] = get_player_profile(request)
     c.update(csrf(request))
     return render_to_response("rules.html",c)
-
+@csrf_exempt
 @login_required(login_url='/login/')
 def submission(request):
     c={}
@@ -52,49 +52,51 @@ def submission(request):
     c['submissions'] = get_player_submissions(request)
     c.update(csrf(request))
     return render_to_response("submission.html",c)
-
+@csrf_exempt
 @login_required(login_url='/login/')
 def leaders(request):
     c = {"leaderboard" : leaderboard}
     c["profile"] = get_player_profile(request)
     c.update(csrf(request))
     return render_to_response("leaderboard.html",c)
-
+@csrf_exempt
 @login_required(login_url='/login/')
 def profile(request):
     c = {}
     c["profile"] = get_player_profile(request)
     c.update(csrf(request))
     return render_to_response("profile.html",c)
-
+@csrf_exempt
 @login_required(login_url='/login/')
 def problem(request):
     id = request.GET.get('id')
     details = get_problem_details(id)
     request.session['playerid'] = get_player_id(request.user.id)
-                
+    logging.info(request.POST)
     update_views(request.session['playerid'],id)
     c = {'q': details}
     if os.path.isfile("img/question/img"+str(id)+'.jpg'):
-        c['image']="img/question/img"+str(id)+'.jpg'
+        c['image']="img/questions/img"+str(id)+'.png'
     c["profile"] = get_player_profile(request)
     print 'yeahhere'
     c['code']=request.POST.get('c-code','')
+    c['lang']=request.POST.get('lang','')
     c.update(csrf(request))
     return render_to_response("submit.html",c)
-
+@csrf_exempt
 @login_required(login_url='/login/')
 def fullscreen(request):
     id = request.GET.get('id')
+    logging.info(request.POST)
     details = get_problem_details(id)
-    c = {'q': details}
+    c = {'q': details,'lang':request.POST.get('lang')}
     print request.POST
     if request.POST:
         c['code']=request.POST.get('c-code','')
     c.update(csrf(request))
 
     return render_to_response("fullscreen.html",c,context_instance=RequestContext(request))
-
+@csrf_exempt
 @login_required(login_url='/login/')
 def allproblems(request):
     details = get_problems()
@@ -102,7 +104,7 @@ def allproblems(request):
     c["profile"] = get_player_profile(request)
     c.update(csrf(request))
     return render_to_response("question.html",c)
-
+@csrf_exempt
 def login(request,msg=""):
     errors = [msg]
     print request.POST
@@ -122,6 +124,7 @@ def login(request,msg=""):
     c.update(csrf(request))
     return render_to_response("signin.html",c)
 
+@csrf_exempt
 @login_required(login_url='/login/')
 def upload(request):
     id = request.POST.get('qid')
@@ -131,19 +134,19 @@ def upload(request):
     c = {'q': details}
     if request.POST:
         print request.POST
-        submissionid = save_submission(request,id)
+        submissionid = save_submission(request,id,request.POST.get('lang'))
         print submissionid
         if type(submissionid) == type("s"):
             c['messages']=submissionid
         elif submissionid>0:
             c['messages']="Upload Successful."
-            c['message_compilation'] = compile_submission(request,str(submissionid),id)
+            c['message_compilation'] = compile_submission(request,str(submissionid),id,request.POST.get('lang'))
         else:
             c['messages']='Upload failed, please try again.'
     print json.dumps(c)
     return HttpResponse(json.dumps(c), content_type="application/json")
     
-
+@csrf_exempt
 @login_required(login_url='/login/')
 def home(request):
     c={}
@@ -154,7 +157,7 @@ def home(request):
     c['problems'] = get_problems()
     c.update(csrf(request))
     return render_to_response("profile.html",c,context_instance=RequestContext(request))
-
+@csrf_exempt
 @login_required(login_url='/login/')
 def discussionboard(request):
     id = request.GET.get('id')
@@ -175,7 +178,7 @@ def logout(request):
     else:
         logout_player(request)
         return HttpResponseRedirect('/signin')
-
+@csrf_exempt
 def signup(request):
     errors = []
     print request.POST
@@ -204,6 +207,7 @@ def signup(request):
 
     return render_to_response("Signup.html",c,context_instance=RequestContext(request))
 
+@csrf_exempt
 @login_required(login_url='/login/')
 def createquestion(request):
     errors = []

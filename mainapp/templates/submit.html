@@ -93,9 +93,10 @@
                               <!-- <strong>Example<br /></strong> -->
                               <br />
                                 
-								{% if image %}
+								{% if q.id == 6 %}
 								<div class="img-responsive">
-									<img src="{% static image %}" />
+
+									<img src="{% static "img/questions/img6.png" %}" />
 								</div>
 								{% endif %}
 								
@@ -140,7 +141,13 @@
 <div>
 <form method="post" action="/fullscreen?id={{q.id}}">
 	{% csrf_token %}
+<p><center>Select language: <select id="lang" name="lang">
+    <option {% if lang == 'C' %} SELECTED {% endif %}value="C">C</option>
+    <option {% if lang == 'C++' %} SELECTED {% endif %}  value="C++">C++</option>
+</select></center>
+</p>
 
+<input type="hidden" id="chlang" name="chlang" value={{lang}}>
 <textarea id="c-code" name='c-code' onkeyup="updatebody(this)">
 {% if not code %}/* C demo code */
 #include <stdio.h>

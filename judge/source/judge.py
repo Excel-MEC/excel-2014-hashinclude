@@ -4,7 +4,7 @@ import filecmp
 from multiprocessing import Process
 import subprocess
 from datetime import datetime
-
+import logging
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 class solution_verificationThread(threading.Thread):
@@ -119,6 +119,7 @@ def cleaner(code_name, lang, submissionid):
 # stage 1 compilation. 
 def compilation_engine(code_name, lang, submissionid,problemid,foldername):
     ioeredirect=ioe_redirect_create(submissionid,foldername,problemid)
+    logging.info(lang)
     print "\nStage 1 : Compilation Started ..."
     if lang == "C" :
         os.system("gcc "+code_name+".c -lm -lcrypt -O2 -pipe -w -o "+code_name+ioeredirect)
@@ -180,12 +181,14 @@ def kill(code_name,lang,submissionid,problemid,foldername,userid):
     thread3.start()
     return False
 
+
 def clean(file):
     f=open(file,'r+')
     lines = f.read().split("\n")
     f.seek(0,0)
     for i in lines:
         if i:
+            i=i.strip(' ')
             f.write(i+'\n');
     f.truncate()
     f.close()
@@ -193,6 +196,7 @@ def clean(file):
     str=f.read()
     f.close()
     print str
+
 
 def solution_verification(submissionid, problemid,foldername,userid):
     solutionpath = str(BASE_PATH)+"/mainapp/media/question_"+problemid+"/output.txt"

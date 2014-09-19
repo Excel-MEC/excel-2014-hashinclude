@@ -90,7 +90,10 @@ $.ajaxSetup({
     }
 });
 
-data={'code':cEditor.getValue(),'qid':$('#qid').val(),'upload':'True'};
+data={'code':cEditor.getValue(),'qid':$('#qid').val(),
+	'upload':'True','lang':$('#lang').val(),'chlang':$('#chlang').val()
+	};
+
 console.log(data);
 $.ajax({
     url: '/upload',

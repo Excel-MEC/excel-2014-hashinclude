@@ -5,7 +5,7 @@ from mainapp.models import Player,Submission
 import re
 import sys
 import os
-
+import logging
 BASE_PATH = os.path.dirname(os.path.dirname(__file__))
 
 ext_to_lang_dict = {
@@ -13,6 +13,10 @@ ext_to_lang_dict = {
                     "c":"C",
                     "java":"Java",
                     "py":"Python",
+                    }
+lang_dict = {
+                    "C++":".cpp",
+                    "C":".c",
                     }
     
 
@@ -23,7 +27,7 @@ def file_verify(file):
     else:
         return True
     
-def save_submission(request,problemid):
+def save_submission(request,problemid,lang):
     file = str(request.POST.get('code'))
     if Submission.objects.filter(problemid_id=problemid).filter(status="Success").filter(playerid__userid=request.user).exists():
         return "Already solved, submission not accepted."
@@ -36,23 +40,21 @@ def save_submission(request,problemid):
     foldername = str(request.user.username)+'_'+str(request.user.id)+'/'        
     if True:
         player = Player.objects.get(userid=request.user)
-        s =Submission(playerid=player,problemid_id=problemid,language=ext_to_lang_dict['c'])
+        s =Submission(playerid=player,problemid_id=problemid,language=lang)
         print "saved"
         s.save()
-        with open(str(BASE_PATH)+'/media/'+foldername+'s'+str(s.id)+'.c', 'wb+') as fin:
+        with open(str(BASE_PATH)+'/media/'+foldername+'s'+str(s.id)+lang_dict[lang], 'wb+') as fin:
             fin.write(file)
         player = Player.objects.get(userid=request.user)
         return s.id
     else:
         return 0
 
-def compile_submission(request,submissionid,problemid):
-    filename = 's'+submissionid+'.c'
-    extension = 'c'
+def compile_submission(request,submissionid,problemid,lang):
     filename = 's'+submissionid
     foldername = '/'+str(request.user.username)+'_'+str(request.user.id)
     file = str(BASE_PATH)+'/media'+foldername+'/'+filename
-    lang = ext_to_lang_dict[extension]
+
     print file
     cleaner(file, lang, submissionid)
     S = Submission.objects.get(id=submissionid)

@@ -62,7 +62,14 @@
 </center>
 <form method="post" action="/submit?id={{q.id}}">
 	{% csrf_token %}
-	
+<center>
+<p >Select a language: <select name="lang">
+    <option value="C" {% if lang == "C" %}SELECTED{% endif %}>C</option>
+    <option value="C++" {% if lang == "C++" %}SELECTED{% endif %}>C++</option>
+</select>
+</p>
+</center>
+<input id="chlang" name="chlang" type="hidden" value="{{lang}}">	
 <div>
 {% if not code %}
 <textarea id="c-code" name='c-code'>

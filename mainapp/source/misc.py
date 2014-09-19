@@ -35,21 +35,26 @@ def save_question(request):
         for chunk in file.chunks():
               destination.write(chunk)
     clean(str(BASE_PATH)+'/media/'+foldername+'output.txt')
+    os.system('dos2unix '+str(BASE_PATH)+'/media/'+foldername+'output.txt')
     file = request.FILES.get('testcases') 
     with open(str(BASE_PATH)+'/media/'+foldername+'testcases.txt', 'wb') as destination:
         for chunk in file.chunks():
             destination.write(chunk)
     clean(str(BASE_PATH)+'/media/'+foldername+'testcases.txt')
+    os.system('dos2unix '+str(BASE_PATH)+'/media/'+foldername+'testcases.txt')
     file = request.FILES.get('simpleoutput') 
     with open(str(BASE_PATH)+'/media/'+foldername+'simpleoutput.txt', 'wb') as destination:
         for chunk in file.chunks():
             destination.write(chunk)
+    os.system('dos2unix '+str(BASE_PATH)+'/media/'+foldername+'simpleoutput.txt')
     clean(str(BASE_PATH)+'/media/'+foldername+'simpleoutput.txt')
     file = request.FILES.get('simpleinput') 
     with open(str(BASE_PATH)+'/media/'+foldername+'simpleinput.txt', 'wb') as destination:
         for chunk in file.chunks():
             destination.write(chunk)
     clean(str(BASE_PATH)+'/media/'+foldername+'simpleinput.txt')
+    os.system('dos2unix '+str(BASE_PATH)+'/media/'+foldername+'simpleinput.txt')
+    
     return True
 
 def get_problems():

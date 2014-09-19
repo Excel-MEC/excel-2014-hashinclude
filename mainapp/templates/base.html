@@ -36,7 +36,7 @@
         <!-- needs images, font... therefore can not be part of ui.css -->
          
          
-         <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
+         <link rel="shortcut icon" type="image/png" href="{% static "img/favicon.png" %}"/>
         <!-- end needs images -->
 
 
@@ -108,6 +108,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </div>
+
         <div class="top-nav">
             <ul class="nav-left list-unstyled"></ul>
             <ul class="nav-right pull-right list-unstyled">
@@ -224,16 +225,18 @@
 </div>
 
 
+
 {% block content %}
 {% endblock %}
 
 
+<div style="position:fixed;left:0%;bottom:0%">
+<img style="position:fixedbottom:0%;left:0%" src="{% static "img/logo_factset.gif" %}"
+</div>
 
 
 
        
-
-
 
         
 <script src="http://code.jquery.com/jquery-latest.js"></script>
