@@ -77,6 +77,55 @@
       cEditor.setOption("mode", 'text/x-csrc');
    }
 
+document.getElementById("submitbutton").onclick = function() {
+var csrftoken = getCookie('csrftoken');
+
+    //disable
+    this.disabled = true;
+
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        
+    }
+});
+
+data={'code':cEditor.getValue(),'qid':$('#qid').val(),
+	'upload':'True','lang':$('#lang').val(),'chlang':$('#chlang').val()
+	};
+
+console.log(data);
+$.ajax({
+    url: '/upload',
+    type: 'post', 
+	data:data,
+    success: function(data) {
+		
+		console.log('success');
+		str='';
+		str+=data['messages']+'\n';
+		str+=data['message_compilation']+'\n';
+		alert(str);
+	
+	
+	
+    },
+    failure: function(data) { 
+        alert('Got an error');
+    }
+}); 
+	
+function enableButton(){
+    $('#submitbutton').attr("disabled", false);
+}
+
+
+setTimeout(enableButton,1750);
+};
+
+
+
 function uploadpgm () {
 	
 var csrftoken = getCookie('csrftoken');
