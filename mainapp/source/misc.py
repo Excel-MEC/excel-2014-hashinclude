@@ -90,6 +90,8 @@ def leaderboard():
     leaderboard = []
     players = Player.objects.all()
     for player in players:
+	if ' ' in player.userid.username:
+		continue
         data = {"name" : player.userid.username, "score" : player.totalscore,'lastsolution':player.lastsolutiontime}
         leaderboard.append(data)
     return leaderboard

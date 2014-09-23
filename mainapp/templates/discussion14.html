@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+ 
+<div id="demo">
+<div class="view-container">
+
+    <section id="content" class="animate-fade-up ng-scope" data-ng-view="">
+        <div class="page page-dashboard ng-scope" data-ng-controller="DashboardCtrl">
+        <div class="row">
+        <div class="col-md-12">
+    
+
+<div class="challenge-header col-md-10">
+            <header class="view_header boundB">
+                
+                <ul class="nav-tabs nav" style="padding-bottom: 1px;">
+                    <li id="problemTab" >
+                        <a class="hr-problem-link" href="/submit?id={{q.id}}">
+
+                            Problem
+
+                        </a>
+                    </li>
+                    <li id="submissionsTab" class="active">
+                        <a class="hr-submissions-link" href="/discussion?id={{q.id}}">
+
+                            Discussion Board
+                        </a>
+                    </li>
+                   
+                </ul>
+            </header>
+        </div>
+   
+        
+    <div class="col-md-12">
+
+        <div class="panel panel-default noborder">
+                             <div class="panel-body">
+
+                              <div id="disqus_thread"></div>
+
+    <script type="text/javascript">
+
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+
+        var disqus_shortname = 'hashincludemec'; // required: replace example with your forum shortname
+
+
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+
+        (function() {
+
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+
+        })();
+
+    </script>
+
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+
+</script>
+</script>
+</script>
+
+<script src="{% static "scripts/vendor.js" %}"></script>
+
+        <script src="{% static "scripts/ui.js" %}"></script>
+
+
+
+        <script src="{% static "scripts/app.js" %}"></script>
+        
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+
+</script>
+</script>
+</script>
+</aside>
+</div>
+</div>
+{% endblock %}

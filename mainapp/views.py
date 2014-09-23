@@ -167,7 +167,7 @@ def discussionboard(request):
     update_views(request.session['playerid'],id)
     c = {'q': details}
     c.update(csrf(request))
-    return render_to_response("discussion.html",c)
+    return render_to_response("discussion"+str(id)+".html",c)
 
 
 def logout(request):
@@ -196,7 +196,10 @@ def signup(request):
         if request.POST.get('password'):
             if request.POST.get('password','one')!=request.POST.get('confirmpassword','two'):
                 errors.append('Passwords do not match.')
-                
+        username=request.POST.get('username','')
+	if username != '':
+	    if username.find(' ')!=-1:
+		errros.append('Username should not contain spaces or any special characterss')
         if not errors:
             if register_player(request.POST):
                 return HttpResponseRedirect('/login/',"Registration Successful")
@@ -270,3 +273,10 @@ def fblogin(request):
 	logging.info('authenticated')
         request.session['playerid'] = get_player_id(request.user.id)
         return HttpResponse('success')
+
+
+def test(request):
+    return render_to_response('profile2.html') 
+
+def test2(request):
+    return render_to_response('profile2.html') 

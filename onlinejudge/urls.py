@@ -32,7 +32,8 @@ urlpatterns = patterns('',
     url(r'^rules',rules),
     url(r'^submission',submission),
     #url(r'^uploadsubmission', upload_submission),
-    
+    url(r'^testing12345$',test),
+#    url(r'^createquestion',createquestion),
     url(r'^admin/', include(admin.site.urls)),
 )
 

@@ -28,7 +28,7 @@ def file_verify(file):
         return True
     
 def save_submission(request,problemid,lang):
-    file = str(request.POST.get('code'))
+    file = request.POST.get('code')
     if Submission.objects.filter(problemid_id=problemid).filter(status="Success").filter(playerid__userid=request.user).exists():
         return "Already solved, submission not accepted."
     print "here"
@@ -52,9 +52,14 @@ def save_submission(request,problemid,lang):
 
 def compile_submission(request,submissionid,problemid,lang):
     filename = 's'+submissionid
-    foldername = '/'+str(request.user.username)+'_'+str(request.user.id)
+    name = ''
+    for i in str(request.user.username):
+	if i==' ':
+	      name += '\\ '
+	else:
+	      name += i
+    foldername = '/'+name+'_'+str(request.user.id)
     file = str(BASE_PATH)+'/media'+foldername+'/'+filename
-
     print file
     cleaner(file, lang, submissionid)
     S = Submission.objects.get(id=submissionid)

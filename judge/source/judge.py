@@ -99,7 +99,7 @@ def cleaner(code_name, lang, submissionid):
             filename = code_name+".cpp"
         #filter out dangerous functions and headers
         dangers = []
-        dangers = ['system(','fork(','<CON','execl(','execlp(','wait(','<signal.h>','<fcntl.h>','socket.h','unistd.h','<csignal>','<thread>','pthread.h','syscall','CreateProcess','ShellExecute','sys/','netinet/in.h','netdb.h','kill(']
+        #dangers = ['system(','fork(','<CON','execl(','execlp(','wait(','<signal.h>','<fcntl.h>','socket.h','unistd.h','<csignal>','<thread>','pthread.h','syscall','CreateProcess','ShellExecute','sys/','netinet/in.h','netdb.h','kill(']
         lines = [line.strip() for line in open(filename)]
         cleaned = 0
         #remove all white spaces from each line and then filter out the danger
