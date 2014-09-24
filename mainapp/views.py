@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import json
 import os
+from mainapp.models import Feedback
 from source.submission import *
 from source.misc import *
 from source.player import *
@@ -273,6 +274,36 @@ def fblogin(request):
 	logging.info('authenticated')
         request.session['playerid'] = get_player_id(request.user.id)
         return HttpResponse('success')
+
+@csrf_exempt
+@login_required(login_url='/login/')
+def feedback(request):
+    errors=[]
+    id=request.session['playerid']
+                
+    details = get_problem_details(id)
+    if request.POST:
+        if not request.POST.get('name', ''):
+            errors.append('Enter name.')
+        if not request.POST.get('feedback', ''):
+            errors.append('Enter feedback.')
+        if not request.POST.get('rating', ''):
+            errors.append('Enter rating.')
+        try:
+            p=Player.objects.get(id=int(request.POST.get('id',-1)))
+        except:
+            pass
+        print 'here',request.POST
+        if not errors:
+            name=request.POST.get('name', '')
+            feedback=request.POST.get('feedback', '')
+            rating=request.POST.get('rating', '')
+            f=Feedback(name=name,rating=rating,feedback=feedback,college=request.POST.get('college',''),player=p)
+            f.save()
+            return HttpResponse('success')
+    c = {'errors':errors,'profile':details}
+    c.update(csrf(request))
+    return render_to_response('feedback.html',c) 
 
 
 def test(request):

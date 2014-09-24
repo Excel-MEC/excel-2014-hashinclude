@@ -10,7 +10,7 @@
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- needs images, font... therefore can not be part of ui.css -->
          
-         
+         <input type="hidden" name="profileid" id="profileid" value="{{profile.id}}">
         
         <link href="{% static "css/bootstrap.css" %}" rel="stylesheet" type="text/css">
          <link href="{% static "css/bootstrap-theme.css" %}"rel="stylesheet" type="text/css">
@@ -211,6 +211,10 @@
         </li>
         <li>
             <a href="/rules"><i class="fa fa-book"><span class="icon-bg bg-warning"></span></i><span data-i18n="Rules"></span></a>
+            
+        </li>
+        <li>
+            <a href="/feedback"><i class="fa fa-star"><span class="icon-bg bg-twitter"></span></i><span data-i18n="Feedback"></span></a>
             
         </li>
                <li>

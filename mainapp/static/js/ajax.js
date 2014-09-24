@@ -139,3 +139,36 @@ $.ajax({
 
 }
 
+function feedbackajax() {
+
+var csrftoken = getCookie('csrftoken');
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+
+    }
+});
+
+data = {'id':$('#profileid').val(),'name':$('#name').val(),'college':$('#college').val(),
+		'feedback':$('#feedback').val(),'rating':$('#input-2b').val()
+		};
+
+$.ajax({
+    url: '/feedback',
+    type: 'post',
+	data: data,
+    success: function(data) {
+       
+        		window.location.replace("/profile");
+
+		        
+
+    },
+    failure: function(data) {
+        alert('Got an error');
+    }
+});
+
+	
+} 

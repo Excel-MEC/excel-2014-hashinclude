@@ -42,3 +42,11 @@ class Submission(models.Model):
     timetaken = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now=True)
     safe = models.BooleanField(default=True)
+
+class Feedback(models.Model):
+    player = models.ForeignKey(Player)
+    name = models.CharField(max_length=50)
+    feedback = models.TextField(max_length=5000)
+    college = models.CharField(max_length=50,default='N/A')
+    rating = models.FloatField(default=-1)
+    
